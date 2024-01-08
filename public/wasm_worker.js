@@ -14,7 +14,7 @@ class Notarizer {
     requestStringsToNotarize,
     responseStringsToNotarize,
     keysToNotarize,
-    notaryServer, websockifyServer,
+    notaryServer, notarySsl, websockifyServer,
   ) {
     console.log('start notarize');
     console.log("!@# navigator.hardwareConcurrency=", navigator.hardwareConcurrency)
@@ -29,6 +29,7 @@ class Notarizer {
       responseStringsToNotarize,
       keysToNotarize,
       notaryServer,
+      notarySsl,
       websockifyServer,
     );
     if (resProver.startsWith("Error Status:")) {

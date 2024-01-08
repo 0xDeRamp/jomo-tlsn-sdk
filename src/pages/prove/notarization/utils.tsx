@@ -50,7 +50,8 @@ export async function notarizeRequest(
       requestStringsToNotarize,
       responseStringsToNotarize,
       keysToNotarize,
-      "ws://127.0.0.1:61288",
+      "127.0.0.1:7047",
+      false,
       `ws://127.0.0.1:${serverToWebsockifyPort[server]}`,
     );
   })

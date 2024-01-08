@@ -1,11 +1,14 @@
-#![feature(once_cell)]
+mod requests;
+use crate::requests::{ClientType, NotarizationSessionRequest, NotarizationSessionResponse};
 
 use bytes::{BufMut, BytesMut};
 use std::collections::HashSet;
+use std::convert::TryInto;
 use std::{ops::Range, sync::Arc};
 use tls_client::ClientConnection;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
+use wasm_bindgen_futures::JsFuture;
 use ws_stream_wasm::WsMeta;
 
 use futures::channel::oneshot;
@@ -14,15 +17,16 @@ use tokio_util::compat::FuturesAsyncReadCompatExt;
 
 use hyper::{body::to_bytes, Body, Request, StatusCode};
 
-use tlsn_core::commitment::CommitmentId;
 use tlsn_prover::tls::{Prover, ProverConfig};
 
 pub use tls_client::backend::RustCryptoBackend;
-use tls_client::{RootCertStore, ServerName};
+use tls_client::RootCertStore;
 use tls_client_async::bind_client;
 
 use rayon::prelude::*;
 pub use wasm_bindgen_rayon::{init_thread_pool, wbg_rayon_start_worker};
+
+use js_sys::JSON;
 
 extern crate web_sys;
 
@@ -36,6 +40,12 @@ macro_rules! log {
 #[wasm_bindgen(module = "post_updates")]
 extern "C" {
     fn post_update(a: &str);
+}
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = self)]
+    fn fetch(request: &web_sys::Request) -> js_sys::Promise;
 }
 
 fn find_ranges(json: &str, target_keys_list: js_sys::Array) -> Vec<[usize; 2]> {
@@ -395,6 +405,17 @@ fn default_root_store() -> RootCertStore {
     root_store
 }
 
+async fn fetch_as_json_string(url: &str, opts: &web_sys::RequestInit) -> Result<String, JsValue> {
+    let request = web_sys::Request::new_with_str_and_init(url, opts)?;
+    let promise = fetch(&request);
+    let future = JsFuture::from(promise);
+    let resp_value = future.await?;
+    let resp: web_sys::Response = resp_value.dyn_into().unwrap();
+    let json = JsFuture::from(resp.json()?).await?;
+    let stringified = JSON::stringify(&json).unwrap();
+    Ok(stringified.as_string().unwrap())
+}
+
 #[wasm_bindgen]
 pub async fn requestViaWebsocket(
     server: &str,
@@ -416,7 +437,7 @@ pub async fn requestViaWebsocket(
     let client = ClientConnection::new(
         Arc::new(config),
         Box::new(RustCryptoBackend::new()),
-        ServerName::try_from(server).unwrap(),
+        server.try_into().unwrap(),
     )
     .unwrap();
 
@@ -514,37 +535,85 @@ pub async fn notarizeRequest(
     request_strings_to_notarize: js_sys::Array,
     response_strings_to_notarize: js_sys::Array,
     keys_to_notarize: js_sys::Array,
-    notary_url: &str,
+    notary_host: &str,
+    notary_ssl: bool,
     client_websocket_url: &str,
 ) -> String {
+    /*
+     * Connect Notary with websocket
+     */
+    let mut opts = web_sys::RequestInit::new();
+    opts.method("POST");
+    // opts.method("GET");
+    opts.mode(web_sys::RequestMode::Cors);
+
+    // set headers
+    let init_headers = web_sys::Headers::new().unwrap();
+
+    // init_headers.append("Host", "127.0.0.1").unwrap();
+    init_headers
+        .append("Content-Type", "application/json")
+        .unwrap();
+    opts.headers(&init_headers);
+
+    // set body
+    let payload = serde_json::to_string(&NotarizationSessionRequest {
+        client_type: ClientType::Websocket,
+        max_transcript_size: Some(1 << 14),
+    })
+    .unwrap();
+    opts.body(Some(&JsValue::from_str(&payload)));
+
+    // url
+    let url = format!(
+        "{}://{}/session",
+        if notary_ssl { "https" } else { "http" },
+        notary_host
+    );
+    let rust_string = fetch_as_json_string(&url, &opts).await.unwrap();
+    let notarization_response =
+        serde_json::from_str::<NotarizationSessionResponse>(&rust_string).unwrap();
+
+    let notary_wss_url = format!(
+        "Confirmed notary server - {}://{}/notarize?sessionId={}",
+        if notary_ssl { "wss" } else { "ws" },
+        notary_host,
+        notarization_response.session_id
+    );
+
+    post_update(notary_wss_url.as_str());
+
+    post_update("Setting up 3 party TLS connection");
+
+    let (_notary_ws_meta, notary_ws_stream) = WsMeta::connect(notary_wss_url, None)
+        .await
+        .expect_throw("assume the notary ws connection succeeds");
+    let notary_ws_stream_into = notary_ws_stream.into_io();
+
+    /*
+       Connect Application Server with websocket proxy
+    */
+    let (_client_ws_meta, client_ws_stream) = WsMeta::connect(client_websocket_url, None)
+        .await
+        .expect_throw("assume the client ws connection succeeds");
+    let client_ws_stream_into = client_ws_stream.into_io();
+
     // Basic default prover config
     let config = ProverConfig::builder()
-        .id("example")
+        .id(notarization_response.session_id)
         .server_dns(server)
         .build()
         .unwrap();
 
-    // Connect to the Notary
-    let (_, notary_socket) = WsMeta::connect(notary_url, None)
-        .await
-        .expect_throw("assume the notary ws connection succeeds");
-
-    post_update("Setting up 3 party TLS connection");
-
-    // Create a Prover and set it up with the Notary
-    // This will set up the MPC backend prior to connecting to the server.
     let prover = Prover::new(config)
-        .setup(notary_socket.into_io())
+        .setup(notary_ws_stream_into)
         .await
         .unwrap();
 
-    // Connect to the Server
-    let (_, client_socket) = WsMeta::connect(client_websocket_url, None)
-        .await
-        .expect_throw("assume the client ws connection succeeds");
-
-    // Bind the Prover to the sockets
-    let (tls_connection, prover_fut) = prover.connect(client_socket.into_io()).await.unwrap();
+    // Bind the Prover to the server connection.
+    // The returned `mpc_tls_connection` is an MPC TLS connection to the Server: all data written
+    // to/read from it will be encrypted/decrypted using MPC with the Notary.
+    let (mpc_tls_connection, prover_fut) = prover.connect(client_ws_stream_into).await.unwrap();
 
     let (prover_sender, prover_receiver) = oneshot::channel();
     let handled_prover_fut = async {
@@ -561,10 +630,12 @@ pub async fn notarizeRequest(
     spawn_local(handled_prover_fut);
 
     // Attach the hyper HTTP client to the TLS connection
-    let (mut request_sender, connection) = hyper::client::conn::handshake(tls_connection.compat())
-        .await
-        .unwrap();
+    let (mut request_sender, connection) =
+        hyper::client::conn::handshake(mpc_tls_connection.compat())
+            .await
+            .unwrap();
 
+    // Spawn the HTTP task to be run concurrently
     let (connection_sender, connection_receiver) = oneshot::channel();
     let connection_fut = connection.without_shutdown();
     let handled_connection_fut = async {

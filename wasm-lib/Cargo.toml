@@ -17,49 +17,43 @@ wasm-bindgen = "0.2.78"
 wasm-bindgen-futures = "0.4.37"
 js-sys = "0.3.64"
 getrandom = { version = "0.2", features = ["js"] }
-ws_stream_wasm = {version = "0.7", features = ["tokio_io"]}
+ws_stream_wasm = { version = "0.7.4", git = "https://github.com/mhchia/ws_stream_wasm", branch = "dev" }
 
 rayon = "1.5"
 wasm-bindgen-rayon = "1.0"
-# async-std = "1"
-
-futures-util = "0.3.28"
+tracing = "0.1"
+tokio-util = "0.7"
 futures = "0.3"
+serde = { version = "1.0.147", features = ["derive"] }
+serde-wasm-bindgen = "0.6.1"
+url = { version = "2.0", features = ["serde"] }
 webpki-roots = "0.23"
 
-tokio-util = { version = "0.7", features = ["compat"] }
-tokio = { version = "1.29.1", features = [
-    "rt",
-    "macros",
+tlsn-tls-client = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk" }
+tlsn-tls-client-async = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk" }
+tlsn-prover = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk", package = "tlsn-prover", features = [
+  "tracing",
 ] }
+tlsn-core = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk", package = "tlsn-core" }
 
-tlsn-core = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-new" }
-tlsn-prover = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-new" }
-tlsn-tls-client = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-new" }
-tlsn-tls-client-async = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-new" }
-tlsn-utils = { git = "https://github.com/chcharcharlie/tlsn-utils.git", branch="jomo" }
-tlsn-utils-aio = { git = "https://github.com/chcharcharlie/tlsn-utils.git", branch="jomo" }
+futures-util = "0.3.28"
+chrono = "0.4"
+elliptic-curve = { version = "0.13.5", features = ["pkcs8"] }
+p256 = { version = "0.13", features = ["pem", "ecdsa"] }
 
-[dev-dependencies]
+console_error_panic_hook = "0.1.7"
+tracing-web = "0.1.2"
+tracing-subscriber = { version = "0.3", features = ["time"] }
 
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-parking_lot_core = "=0.8.0"
-parking_lot = { version = "0.11.1", features = ["wasm-bindgen"]}
-
-[patch.crates-io.ring]
-git="https://github.com/betrusted-io/ring-xous"
-branch="0.16.20-cleanup"
-
-[patch.crates-io.ws_stream_wasm]
-git="https://github.com/mhchia/ws_stream_wasm"
-branch="dev"
-
-# [patch.'https://github.com/chcharcharlie/tlsn-utils']
-# tlsn-utils = { git = 'https://www.github.com/tlsnotary/tlsn-utils.git', rev = "b182066" }
-# tlsn-utils-aio = { git = 'https://www.github.com/tlsnotary/tlsn-utils.git', rev = "b182066" }
+# time crate: https://crates.io/crates/time
+# NOTE: It is required, otherwise "time not implemented on this platform" error happens right after "!@# 2".
+# Probably due to tokio's time feature is used in tlsn-prover?
+time = { version = "0.3", features = ["wasm-bindgen"] }
+# Used to calculate elapsed time.
+web-time = "0.2"
 
 [dependencies.web-sys]
-version = "0.3.22"
+version = "0.3.4"
 features = [
   "BinaryType",
   "Blob",
@@ -69,4 +63,44 @@ features = [
   "ProgressEvent",
   "WebSocket",
   "console",
+  'Document',
+  'HtmlElement',
+  'HtmlInputElement',
+  'Window',
+  'Worker',
+  'Headers',
+  'Request',
+  'RequestInit',
+  'RequestMode',
+  'Response',
 ]
+
+[patch.crates-io.ring]
+git="https://github.com/betrusted-io/ring-xous"
+branch="0.16.20-cleanup"
+
+[patch.crates-io.ws_stream_wasm]
+# path = "../../../others/ws_stream_wasm"
+# Use the patched ws_stream_wasm to fix the issue https://github.com/najamelan/ws_stream_wasm/issues/12#issuecomment-1711902958
+git="https://github.com/mhchia/ws_stream_wasm"
+branch="dev"
+
+# [patch.'https://github.com/tlsnotary/tlsn-utils']
+# # Use single cpu backend
+# tlsn-utils = { git = 'https://www.github.com/mhchia/tlsn-utils.git', rev = "46327f0" }
+# tlsn-utils-aio = { git = 'https://www.github.com/mhchia/tlsn-utils.git', rev = "46327f0" }
+
+# The `console_error_panic_hook` crate provides better debugging of panics by
+# logging them with `console.error`. This is great for development, but requires
+# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
+# code size when deploying.
+console_error_panic_hook = { version = "0.1.7", optional = true }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.34"
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
