@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react'
 import { Button, Collapse, Stack, TextField, ToggleButtonGroup, Typography, ToggleButton, Avatar } from '@mui/material';
 // @ts-ignore
 import { useUserContext } from '../../../context/UserContext.tsx';
-import Iconify from '../../../components/iconify';
 import * as apis from '../../../utils/apirequests.js'
 import * as utils from './utils'
 import robinhoodImg from '../../../images/robinhood.png'
@@ -157,28 +156,6 @@ function RobinhoodRoi({ onNotarizationComplete, extensionFound }) {
 
   return (
     <Stack gap={2}>
-      <Stack direction={"row"} gap={2} alignItems={"center"}>
-        {!loaded &&
-          <Stack minHeight={36} minWidth={36} borderRadius={5} border={"1px solid"} alignItems={"center"} justifyContent={"center"}>
-            <Iconify height={20} width={20} icon="ri:number-1" />
-          </Stack>
-        }
-        {loaded &&
-          <Stack minHeight={36} minWidth={36} borderRadius={5} alignItems={"center"} justifyContent={"center"}>
-            <Iconify height={36} width={36} icon="material-symbols:check" />
-          </Stack>
-        }
-        {!loaded &&
-          <Typography variant="body1" textAlign="left">
-            Choose a timespan and login to Robinhood to attest your returns
-          </Typography>
-        }
-        {loaded &&
-          <Typography variant="body1" textAlign="left">
-            Successfully Fetched and Notarized
-          </Typography>
-        }
-      </Stack>
       {!loaded &&
         <Stack alignItems={"center"} paddingLeft={2}>
           <Collapse in={credentialEnabled} sx={{ width: 1, maxWidth: "450px" }}>

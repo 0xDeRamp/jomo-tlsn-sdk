@@ -1,20 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
-import { styled, alpha } from '@mui/material/styles';
-import { Stack, Typography, Button, Collapse } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import Iconify from '../../components/iconify';
+import { Stack, Button, Collapse } from '@mui/material';
 import RobinhoodRoi from "./notarization/RobinhoodRoi";
 
-const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(2.5),
-    backgroundColor: alpha(theme.palette.grey[100], 1),
-    borderRadius: 10,
-    maxWidth: 450,
-    width: "100%",
-}));
 
-function ProveNotarization({ flowDetails, validateVerificationProof, redirectBack }) {
+function ProveNotarization({ notaryFlow }) {
     const [needsExtension, setNeedsExtension] = useState(false)
     const [triggerExtensionInstall, setTriggerExtensionInstall] = useState(false)
     const firstMount = useRef(true)
@@ -51,48 +40,22 @@ function ProveNotarization({ flowDetails, validateVerificationProof, redirectBac
     return (
         <Stack gap={2} alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }}>
             {triggerExtensionInstall &&
-                <Item>
-                    <Stack direction={"row"} gap={2} alignItems={"center"}>
-                        {needsExtension &&
-                            <Stack minHeight={36} minWidth={36} borderRadius={5} border={"1px solid"} alignItems={"center"} justifyContent={"center"}>
-                                <Iconify height={20} width={20} icon="ri:number-0" />
-                            </Stack>
-                        }
-                        {!needsExtension &&
-                            <Stack minHeight={36} minWidth={36} borderRadius={5} alignItems={"center"} justifyContent={"center"}>
-                                <Iconify height={36} width={36} icon="material-symbols:check" />
-                            </Stack>
-                        }
-                        {needsExtension &&
-                            <Typography variant="body1" textAlign="left">
-                                Install Jomo Copilot browser extension
-                            </Typography>
-                        }
-                        {!needsExtension &&
-                            <Typography variant="body1" textAlign="left">
-                                Extension Installed
-                            </Typography>
-                        }
-                    </Stack>
-                    <Collapse in={needsExtension}>
-                        <Stack alignItems={"center"} paddingLeft={2} mt={2}>
-                            <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-                                <Button variant="contained" onClick={() => {
-                                    window.open("https://chrome.google.com/webstore/detail/jomo-copilot/nmdnfckjjghlbjeodefnapacfnocpdgm", '_blank');
-                                }}>Go to Chrome Web Store</Button>
-                            </Stack>
+                <Collapse in={needsExtension}>
+                    <Stack alignItems={"center"} paddingLeft={2} mt={2}>
+                        <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
+                            <Button variant="contained" onClick={() => {
+                                window.open("https://chrome.google.com/webstore/detail/jomo-copilot/nmdnfckjjghlbjeodefnapacfnocpdgm", '_blank');
+                            }}>Install Jomo Copilot Extension</Button>
                         </Stack>
-                    </Collapse>
-                </Item>
+                    </Stack>
+                </Collapse>
             }
-            <Item>
-                {flowDetails.flow_info.notarization_flow === "robinhood_roi" &&
-                    <RobinhoodRoi
-                        onNotarizationComplete={onNotarizationComplete}
-                        extensionFound={!needsExtension}
-                    />
-                }
-            </Item>
+            {notaryFlow.flow_id === "robinhood_roi" &&
+                <RobinhoodRoi
+                    onNotarizationComplete={onNotarizationComplete}
+                    extensionFound={!needsExtension}
+                />
+            }
 
         </Stack >
     )

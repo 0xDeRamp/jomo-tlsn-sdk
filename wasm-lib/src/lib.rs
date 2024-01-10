@@ -575,13 +575,11 @@ pub async fn notarizeRequest(
         serde_json::from_str::<NotarizationSessionResponse>(&rust_string).unwrap();
 
     let notary_wss_url = format!(
-        "Confirmed notary server - {}://{}/notarize?sessionId={}",
+        "{}://{}/notarize?sessionId={}",
         if notary_ssl { "wss" } else { "ws" },
         notary_host,
         notarization_response.session_id
     );
-
-    post_update(notary_wss_url.as_str());
 
     post_update("Setting up 3 party TLS connection");
 

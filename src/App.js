@@ -1,5 +1,4 @@
 import './App.css';
-import ProveNavBar from './pages/ProveNavBar';
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { UserContext } from './context/UserContext.tsx';
 import ThemeProvider from './theme';
@@ -14,18 +13,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
 
-  let navbar = null
-  if (page && ["Prove"].includes(page)) {
-    navbar = <ProveNavBar />
-  }
-
   return (
     <BrowserRouter>
       <MotionLazyContainer>
         <ThemeProvider>
           <SnackbarProvider>
             <UserContext.Provider value={{ page, setPage, user, setUser, session, setSession }}>
-              {navbar}
               <Routes>
                 <Route path='/prove' element={<Prove />} />
                 <Route path='*' element={<Page404 />} />
