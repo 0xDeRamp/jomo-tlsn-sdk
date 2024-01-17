@@ -1,7 +1,7 @@
 import { JomoTlsnNotary } from 'jomo-tlsn-sdk/dist';
 
 
-function ProveNotarization() {
+function ProveNotarization({ notaryFlow }) {
 
     return (
         <JomoTlsnNotary />
