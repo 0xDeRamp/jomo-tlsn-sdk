@@ -17,7 +17,7 @@ class Notarizer {
     notaryServer, notarySsl, websockifyServer,
   ) {
     console.log('start notarize');
-    console.log("!@# navigator.hardwareConcurrency=", navigator.hardwareConcurrency)
+    console.log("hardwareConcurrency", navigator.hardwareConcurrency)
     // const wasmPkg = await import('./pkg-parallel/wasm_lib.js');
     const wasmPkg = await import('./pkg/wasm_lib.js');
     await wasmPkg.default();

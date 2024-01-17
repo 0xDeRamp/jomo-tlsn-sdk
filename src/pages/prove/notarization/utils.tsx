@@ -16,7 +16,6 @@ export async function notarizeRequest(
   }
 
   return new Promise((resolve, reject) => {
-    console.log("start notarizeRequest")
     const worker = new Worker("./wasm_worker.js", { type: "module" });
     var subworkers = []
 
@@ -68,7 +67,6 @@ export async function sendRequest(server, path, method, data, headers) {
   }
 
   return new Promise<string>((resolve, reject) => {
-    console.log("start sendRequest")
     const worker = new Worker("./wasm_worker.js", { type: "module" });
     worker.onmessage = async function (e) {
       if (e.data.type === "websocket_request_result") {

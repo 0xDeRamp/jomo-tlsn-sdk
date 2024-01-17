@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
-import { Button, Collapse, Stack, TextField, Typography } from '@mui/material';
+import { Button, Collapse, Stack, TextField, Typography, CircularProgress } from '@mui/material';
+import Iconify from '../../../components/iconify';
 import * as utils from './utils'
 import * as apis from '../../../utils/apirequests.js'
 
 
 function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
-
-  const [credentialEnabled, setCredentialEnabled] = useState(true)
   const [loading, setLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [loadingFailed, setLoadingFailed] = useState(false)
@@ -16,7 +15,6 @@ function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
   const notarizeDetailedText = useRef("")
 
   async function notarizeRevolutLastPayment() {
-    setCredentialEnabled(false)
     setLoading(true)
     setLoadingText("Logging in...")
     const server = "app.revolut.com"
@@ -57,9 +55,7 @@ function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
       return
     }
 
-    setLoadingText("Fetching and notarizing data from Revolut ...")
-
-    console.log(account)
+    setLoadingText("Notarizing ...")
 
     const dataPath = `api/retail/user/current/transactions/last?count=1&internalPocketId=${account}`
     const dataMethod = "GET"
@@ -72,8 +68,6 @@ function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
       notarizeDetailedText,
       setNotarizeDetails,
     )
-
-    console.log(notarizationProof)
 
     await apis.backendRequest("generate_notary_attestation", {
       attestation_name: "revolut_last_payment",
@@ -98,23 +92,30 @@ function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
   }, [notarizeDetails]);
 
   return (
-    <Stack gap={2}>
-      {!loaded &&
-        <Stack alignItems={"center"} paddingLeft={2}>
-          <Collapse in={credentialEnabled} sx={{ width: 1, maxWidth: "450px" }}>
-            <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-              <Button disabled={loading || !extensionFound} variant="contained" onClick={() => { notarizeRevolutLastPayment() }}>Login Revolut</Button>
-            </Stack>
-          </Collapse>
-          <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
+    <Stack gap={2} width={"400px"}>
+      <Stack alignItems={"center"} paddingLeft={2}>
+        <Collapse in={!loading && !loadingFailed && !loaded} sx={{ width: 1, maxWidth: "450px" }}>
+          <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
+            <Button disabled={loading || !extensionFound} variant="contained" onClick={() => { notarizeRevolutLastPayment() }}>Login Revolut</Button>
+          </Stack>
+        </Collapse>
+        <Collapse in={loading} sx={{ width: 1, maxWidth: "400px", alignContent: "center" }}>
+          <Stack direction={"row"} alignItems={"center"} gap={1} justifyContent={"center"}>
+            <CircularProgress size={24} color="primary" />
             <Typography variant="body1" textAlign={"center"}>{loadingText}</Typography>
-          </Collapse>
-          <Collapse in={loadingFailed}>
-            <Typography variant="body1">Failed to fetch data</Typography>
-          </Collapse>
-        </Stack>
-      }
-      {notarizeDetails &&
+          </Stack>
+        </Collapse>
+        <Collapse in={loadingFailed}>
+          <Typography variant="body1">Failed to fetch data</Typography>
+        </Collapse>
+        <Collapse in={loaded}>
+          <Stack direction={"row"} alignItems={"center"} gap={1} justifyContent={"center"}>
+            <Iconify height={36} width={36} color={"success.main"} icon="material-symbols:check" />
+            <Typography variant="body1">Notarized successfully</Typography>
+          </Stack>
+        </Collapse>
+      </Stack>
+      {false && notarizeDetails &&
         <TextField
           size="small"
           fullWidth

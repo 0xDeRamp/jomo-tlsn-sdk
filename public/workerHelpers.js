@@ -19,7 +19,6 @@ function waitForMsgType(type, idx) {
 let _workers;
 
 export async function startWorkers(module, memory, builder) {
-  console.log("start worker")
   const workerInit = {
     type: 'wasm_bindgen_worker_init',
     module,
@@ -56,6 +55,6 @@ export async function startWorkers(module, memory, builder) {
       return worker;
     })
   );
-  console.log("workers: ", _workers)
+  console.log("workers count:", _workers.length)
   builder.build();
 }
