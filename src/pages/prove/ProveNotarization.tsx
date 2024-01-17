@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { Stack, Button, Collapse } from '@mui/material';
 import RobinhoodRoi from "./notarization/RobinhoodRoi";
+import RevolutLastPayment from './notarization/RevolutLastPayment';
+import Venmo from './notarization/Venmo';
 
 
 function ProveNotarization({ notaryFlow }) {
@@ -52,6 +54,18 @@ function ProveNotarization({ notaryFlow }) {
             }
             {notaryFlow.flow_id === "robinhood_roi" &&
                 <RobinhoodRoi
+                    onNotarizationComplete={onNotarizationComplete}
+                    extensionFound={!needsExtension}
+                />
+            }
+            {notaryFlow.flow_id === "revolut_last_payment" &&
+                <RevolutLastPayment
+                    onNotarizationComplete={onNotarizationComplete}
+                    extensionFound={!needsExtension}
+                />
+            }
+            {notaryFlow.flow_id === "venmo" &&
+                <Venmo
                     onNotarizationComplete={onNotarizationComplete}
                     extensionFound={!needsExtension}
                 />

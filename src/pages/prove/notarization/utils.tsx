@@ -11,6 +11,8 @@ export async function notarizeRequest(
   // TODO: Get a new websocket proxy based on server
   const serverToWebsockifyPort = {
     "api.robinhood.com": 61289,
+    "app.revolut.com": 61289,
+    "account.venmo.com": 61289,
   }
 
   return new Promise((resolve, reject) => {
@@ -61,6 +63,8 @@ export async function sendRequest(server, path, method, data, headers) {
   // TODO: Get a new websocket proxy based on server
   const serverToWebsockifyPort = {
     "api.robinhood.com": 61289,
+    "app.revolut.com": 61289,
+    "account.venmo.com": 61289,
   }
 
   return new Promise<string>((resolve, reject) => {

@@ -600,6 +600,7 @@ pub async fn notarizeRequest(
     let config = ProverConfig::builder()
         .id(notarization_response.session_id)
         .server_dns(server)
+        .max_transcript_size(1 << 14)
         .build()
         .unwrap();
 
@@ -739,6 +740,8 @@ pub async fn notarizeRequest(
         }
     }
 
+    post_update(format!("specific strings done, {response_range_count}").as_str());
+
     // Response body, based on key sequences
     let body_range = find_ranges_include(prover.recv_transcript().data(), &[&payload]);
     let public_ranges = find_ranges(&String::from_utf8_lossy(&payload), keys_to_notarize);
@@ -748,6 +751,9 @@ pub async fn notarizeRequest(
             end: range[1] + body_range[0].start,
         });
     }
+    let pub_len = public_ranges_recv.len();
+    let pub_send_len = public_ranges_sent.len();
+    post_update(format!("range search done, {pub_len}, {pub_send_len}").as_str());
 
     let commitment_builder = prover.commitment_builder();
     // Commit to each range of the public outbound data which we want to disclose
@@ -760,6 +766,8 @@ pub async fn notarizeRequest(
         .iter()
         .map(|r| commitment_builder.commit_recv(r.clone()).unwrap())
         .collect();
+
+    post_update("commitment builder done");
 
     // Finalize, returning the notarized session
     let notarized_session: tlsn_core::NotarizedSession = prover.finalize().await.unwrap();
