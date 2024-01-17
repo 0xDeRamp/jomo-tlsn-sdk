@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { Button, Collapse, Stack, TextField, Typography } from '@mui/material';
 import * as utils from './utils'
+import * as apis from '../../../utils/apirequests.js'
 
 
 function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
@@ -62,8 +63,7 @@ function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
 
     const dataPath = `api/retail/user/current/transactions/last?count=1&internalPocketId=${account}`
     const dataMethod = "GET"
-    const keysToNotarize = [["account"], ["amount"], ["category"], ["comment"], ["completeDate"], ["id"], ["recipient"]]
-    // const keysToNotarize = [["account"]]
+    const keysToNotarize = [["account"], ["amount"], ["category"], ["comment"], ["completeDate"], ["id"], ["state"], ["recipient", "id"], ["recipient", "code"], ["currency"]]
     const notarizationProof = await utils.notarizeRequest(
       server, dataPath, dataMethod, {}, headersWithBearer,
       [],
@@ -74,6 +74,14 @@ function RevolutLastPayment({ onNotarizationComplete, extensionFound }) {
     )
 
     console.log(notarizationProof)
+
+    await apis.backendRequest("generate_notary_attestation", {
+      attestation_name: "revolut_last_payment",
+      session_proof: notarizationProof["session_proof"],
+      substrings_proof: notarizationProof["substrings_proof"],
+      body_start: notarizationProof["body_start"],
+    })
+
     setLoaded(true)
     setLoadingFailed(false)
     setLoading(false)
