@@ -89,10 +89,13 @@ function JomoTlsnNotary({
   }
 
   async function notarizeWithAuth(server, authHeaders) {
-    const accountsResponse = JSON.parse(await utils.sendRequest(
-      server, queryPath, queryMethod, {}, authHeaders,
-      websockifyServer,
-    ))
+    var accountsResponse = ""
+    if (queryPath !== "") {
+      accountsResponse = JSON.parse(await utils.sendRequest(
+        server, queryPath, queryMethod, {}, authHeaders,
+        websockifyServer,
+      ))
+    }
 
     setLoadingText("Notarizing ...")
 

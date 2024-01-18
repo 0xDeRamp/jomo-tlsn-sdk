@@ -1,32 +1,19 @@
-import { useEffect, useState, useRef } from 'react'
-import { Button, Collapse, Stack, TextField, ToggleButtonGroup, Typography, ToggleButton, Avatar } from '@mui/material';
-// @ts-ignore
-import { useUserContext } from '../../../context/UserContext.tsx';
+import { useState } from 'react'
+import { Stack, ToggleButtonGroup, Typography, ToggleButton, Avatar } from '@mui/material';
 import * as apis from '../../../utils/apirequests.js'
-import * as utils from './utils'
 import robinhoodImg from '../../../images/robinhood.png'
+import { JomoTlsnNotary } from 'jomo-tlsn-sdk/dist';
 
 
-function RobinhoodRoi({ onNotarizationComplete, extensionFound }) {
-  const userUuid = useRef<string | null>(null)
-  const sessionInfo = useRef({
-    token: null,
-    expiresAt: 0,
-  })
-  const { user, session } = useUserContext()
+function RobinhoodRoi() {
+  const robinhoodServer = "api.robinhood.com"
 
-  const [credentialEnabled, setCredentialEnabled] = useState(true)
   const [loading, setLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const [loadingFailed, setLoadingFailed] = useState(false)
-  const [loadingText, setLoadingText] = useState("")
-  const [notarizeDetails, setNotarizeDetails] = useState("")
   const [verifiedData, setVerifiedData] = useState(null)
   const [verifiedTimestamp, setVerifiedTimestamp] = useState(null)
   const [timespan, setTimespan] = useState('week');
   const [uniqueId, setUniqueId] = useState(null);
-
-  const notarizeDetailedText = useRef("")
 
   const timespanToStr = {
     "0": "Weekly",
@@ -38,60 +25,22 @@ function RobinhoodRoi({ onNotarizationComplete, extensionFound }) {
     setTimespan(newTimespan);
   };
 
-  async function notarizeRobinhoodReturn() {
-    setCredentialEnabled(false)
+  const buildAuthHeaders = function (response) {
     setLoading(true)
-    setLoadingText("Logging in...")
-    const server = "api.robinhood.com"
+    const bearer = response.headers.Authorization.split(" ")[1]
 
-    // @ts-ignore
-    chrome.runtime.sendMessage(
-      "nmdnfckjjghlbjeodefnapacfnocpdgm",
-      {
-        type: "prepareSession",
-        redirectUrl: "https://robinhood.com",
-        urlFilters: ["https://api.robinhood.com/accounts/"]
-      },
-      {},
-      (response) => {
-        const bearer = response.headers.Authorization.split(" ")[1]
-        notarizeRobinhoodWithToken(server, bearer)
-      },
-    )
+    const authedHeader = new Map([
+      ["Authorization", "Bearer " + bearer],
+      ["Host", robinhoodServer],
+    ])
+    return authedHeader
   }
 
-
-  async function notarizeRobinhoodWithToken(server, bearerToken) {
-    const headersWithBearer = new Map([
-      ["Authorization", "Bearer " + bearerToken],
-      ["Host", server],
-      // ["Accept", "*/*"],
-      // ["Accept-Encoding", "gzip, deflate, br"],
-      // ["Accept-Language", "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7"],
-      // ["Origin", "https://robinhood.com"],
-      // ["Referer", "https://robinhood.com/"],
-      // ["Sec-Ch-Ua", '"Not/A)Brand";v="99", "Google Chrome";v="115", "Chromium";v="115"'],
-      // ["Sec-Ch-Ua-Mobile", "?0"],
-      // ["Sec-Ch-Ua-Platform", '"macOS"'],
-      // ["Sec-Fetch-Dest", "empty"],
-      // ["Sec-Fetch-Mode", "cors"],
-      // ["Sec-Fetch-Site", "same-site"],
-      // ["User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"],
-      // ["X-Robinhood-Api-Version", "1.431.4"],
-      // ["X-Timezone-Id", "America/Los_Angeles"],
-      // ["X-Hyper-Ex", "enabled"],
-    ])
-
-    const accountsPath = "accounts/?default_to_all_accounts=true"
-    const accountsMethod = "GET"
-    const accountsResponse = JSON.parse(await utils.sendRequest(server, accountsPath, accountsMethod, {}, headersWithBearer))
-    const account = accountsResponse["results"][0]["account_number"] || null
+  const buildDataPathWithResponse = function (response) {
+    const account = response["results"][0]["account_number"] || null
     if (!account) {
-      setLoadingFailed(true)
-      return
+      return null
     }
-
-    setLoadingText("Fetching and notarizing data from Robinhood ...")
 
     const timespanParams = {
       "week": "interval=day&span=week",
@@ -99,17 +48,10 @@ function RobinhoodRoi({ onNotarizationComplete, extensionFound }) {
       "year": "interval=3month&span=year",
     }
     const dataPath = `portfolios/historicals/${account}/?account=${account}&${timespanParams[timespan]}`
-    const dataMethod = "GET"
-    const keysToNotarize = [["total_return"], ["span"]]
-    const notarizationProof = await utils.notarizeRequest(
-      server, dataPath, dataMethod, {}, headersWithBearer,
-      [],
-      [],
-      keysToNotarize,
-      notarizeDetailedText,
-      setNotarizeDetails,
-    )
+    return dataPath
+  }
 
+  const onNotarizationResult = async function (notarizationProof) {
     let res = await apis.backendRequest("generate_notary_attestation", {
       attestation_name: "us_brokerage_portfolio_movement",
       brokerage: "Robinhood",
@@ -123,82 +65,54 @@ function RobinhoodRoi({ onNotarizationComplete, extensionFound }) {
       setVerifiedTimestamp(res.attestation.sig.message.time)
       setUniqueId(res.unique_id)
       setLoaded(true)
-      onNotarizationComplete(res)
-    } else {
-      setLoadingFailed(true)
     }
     setLoading(false)
   }
 
-  // Whenever local user state finds a new userUuid, get a valid token for the user
-  useEffect(() => {
-    if (user) {
-      userUuid.current = user.userUuid
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
-
-  // Whenever global session updates, update the local ref
-  useEffect(() => {
-    sessionInfo.current = session
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session])
-
-  useEffect(() => {
-    const areas = document.getElementsByClassName("MuiInputBase-inputMultiline")
-    if (notarizeDetails) {
-      for (var i = 0; i < areas.length; i++) {
-        const area = areas.item(i)
-        area.scrollTop = area.scrollHeight
-      }
-    }
-  }, [notarizeDetails]);
-
   return (
-    <Stack gap={2}>
-      {!loaded &&
-        <Stack alignItems={"center"} paddingLeft={2}>
-          <Collapse in={credentialEnabled} sx={{ width: 1, maxWidth: "450px" }}>
-            <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-              <ToggleButtonGroup
-                color="primary"
-                size="small"
-                aria-label="Time Span"
-                value={timespan}
-                exclusive
-                onChange={handleTimespanChange}
-                disabled={loading || !extensionFound}
-              >
-                <ToggleButton value="week">Weekly</ToggleButton>
-                <ToggleButton value="month">Monthly</ToggleButton>
-                <ToggleButton value="year">Yearly</ToggleButton>
-              </ToggleButtonGroup>
-              <Button disabled={loading || !extensionFound} variant="contained" onClick={() => { notarizeRobinhoodReturn() }}>Login Robinhood and Prove</Button>
-            </Stack>
-          </Collapse>
-          <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
-            <Typography variant="body1" textAlign={"center"}>{loadingText}</Typography>
-          </Collapse>
-          <Collapse in={loadingFailed}>
-            <Typography variant="body1">Failed to fetch data</Typography>
-          </Collapse>
-        </Stack>
-      }
-      {notarizeDetails &&
-        <TextField
+    <>
+      <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
+        <ToggleButtonGroup
+          color="primary"
           size="small"
-          fullWidth
-          multiline
-          minRows={3}
-          maxRows={10}
-          margin="dense"
-          variant="outlined"
-          label="Notarization process details"
-          value={notarizeDetails}
-          contentEditable={false}
-          onChange={(event) => { event.target.scrollTo(0, event.target.scrollHeight) }}
-        />
-      }
+          aria-label="Time Span"
+          value={timespan}
+          exclusive
+          onChange={handleTimespanChange}
+          disabled={loading || loaded}
+        >
+          <ToggleButton value="week">Weekly</ToggleButton>
+          <ToggleButton value="month">Monthly</ToggleButton>
+          <ToggleButton value="year">Yearly</ToggleButton>
+        </ToggleButtonGroup>
+      </Stack>
+
+      <JomoTlsnNotary
+        notaryServers={{
+          notaryServerHost: "127.0.0.1:7047",
+          notaryServerSsl: false,
+          websockifyServer: "ws://127.0.0.1:61289",
+        }}
+        extensionConfigs={{
+          redirectUrl: "https://robinhood.com",
+          urlFilters: ["https://api.robinhood.com/accounts/"]
+        }}
+        applicationConfigs={{
+          appServer: robinhoodServer,
+          appName: "Robinhood",
+        }}
+        onNotarizationResult={onNotarizationResult}
+        defaultNotaryFlowConfigs={{
+          defaultNotaryFlow: true,
+          buildAuthHeaders: buildAuthHeaders,
+          queryPath: "accounts/?default_to_all_accounts=true",
+          queryMethod: "GET",
+          buildDataPathWithResponse: buildDataPathWithResponse,
+          dataMethod: "GET",
+          keysToNotarize: [["total_return"], ["span"]],
+        }}
+      />
+
       {loaded &&
         <Stack gap={1} alignItems={"left"} paddingX={5} width={1}>
           <Stack direction="row" spacing={1} alignItems='center'>
@@ -235,7 +149,7 @@ function RobinhoodRoi({ onNotarizationComplete, extensionFound }) {
           </Stack>
         </Stack>
       }
-    </Stack>
+    </>
   )
 }
 

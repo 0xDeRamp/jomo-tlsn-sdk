@@ -1,113 +1,55 @@
-import { useEffect, useState, useRef } from 'react'
-import { Button, Collapse, Stack, TextField, Typography } from '@mui/material';
-import * as utils from './utils'
+import { JomoTlsnNotary } from 'jomo-tlsn-sdk/dist';
 
 
-function Venmo({ onNotarizationComplete, extensionFound }) {
-  const [credentialEnabled, setCredentialEnabled] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [loadingFailed, setLoadingFailed] = useState(false)
-  const [loadingText, setLoadingText] = useState("")
-  const [notarizeDetails, setNotarizeDetails] = useState("")
+function Venmo() {
+  const venmoServer = "account.venmo.com"
 
-  const notarizeDetailedText = useRef("")
+  const buildAuthHeaders = function (response) {
+    const cookieHeader = response.headers.Cookie
 
-  async function notarizeVenmoLastPayment() {
-    setCredentialEnabled(false)
-    setLoading(true)
-    setLoadingText("Logging in...")
-
-    // @ts-ignore
-    chrome.runtime.sendMessage(
-      "nmdnfckjjghlbjeodefnapacfnocpdgm",
-      {
-        type: "prepareSession",
-        redirectUrl: "https://account.venmo.com/",
-        urlFilters: ["https://account.venmo.com/api/stories*"]
-      },
-      {},
-      (response) => {
-        const cookieHeader = response.headers.Cookie
-        notarizeWithAuthentication(cookieHeader)
-      },
-    )
-  }
-
-
-  async function notarizeWithAuthentication(cookieHeader) {
-    const server = "account.venmo.com"
-
-    const headersWithBearer = new Map([
+    const authedHeader = new Map([
       ["Cookie", cookieHeader],
-      ["Host", server],
+      ["Host", venmoServer],
       ["Accept", "application/json, text/javascript, */*; q=0.01"],
     ])
-
-    setLoadingText("Fetching and notarizing data from Venmo ...")
-
-    const dataPath = `api/stories?feedType=betweenYou&otherUserId=2126505450668032650&externalId=2770628205608960739`
-    const dataMethod = "GET"
-    const keysToNotarize = [["stories", "amount"]]
-    const notarizationProof = await utils.notarizeRequest(
-      server, dataPath, dataMethod, {}, headersWithBearer,
-      [],
-      [],
-      keysToNotarize,
-      notarizeDetailedText,
-      setNotarizeDetails,
-    )
-
-    console.log(notarizationProof)
-    setLoaded(true)
-    setLoadingFailed(false)
-
-    setLoading(false)
+    return authedHeader
   }
 
-  useEffect(() => {
-    const areas = document.getElementsByClassName("MuiInputBase-inputMultiline")
-    if (notarizeDetails) {
-      for (var i = 0; i < areas.length; i++) {
-        const area = areas.item(i)
-        area.scrollTop = area.scrollHeight
-      }
-    }
-  }, [notarizeDetails]);
+  const buildDataPathWithResponse = function (_) {
+    const dataPath = `api/stories?feedType=betweenYou&otherUserId=2126505450668032650&externalId=2770628205608960739`
+    return dataPath
+  }
+
+  const onNotarizationResult = async function (res) {
+    console.log(res)
+  }
 
   return (
-    <Stack gap={2}>
-      {!loaded &&
-        <Stack alignItems={"center"} paddingLeft={2}>
-          <Collapse in={credentialEnabled} sx={{ width: 1, maxWidth: "450px" }}>
-            <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-              <Button disabled={loading || !extensionFound} variant="contained" onClick={() => { notarizeVenmoLastPayment() }}>Login Venmo</Button>
-            </Stack>
-          </Collapse>
-          <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
-            <Typography variant="body1" textAlign={"center"}>{loadingText}</Typography>
-          </Collapse>
-          <Collapse in={loadingFailed}>
-            <Typography variant="body1">Failed to fetch data</Typography>
-          </Collapse>
-        </Stack>
-      }
-      {notarizeDetails &&
-        <TextField
-          size="small"
-          fullWidth
-          multiline
-          minRows={3}
-          maxRows={10}
-          margin="dense"
-          variant="outlined"
-          label="Notarization process details"
-          value={notarizeDetails}
-          contentEditable={false}
-          onChange={(event) => { event.target.scrollTo(0, event.target.scrollHeight) }}
-        />
-      }
-    </Stack>
+    <JomoTlsnNotary
+      notaryServers={{
+        notaryServerHost: "127.0.0.1:7047",
+        notaryServerSsl: false,
+        websockifyServer: "ws://127.0.0.1:61289",
+      }}
+      extensionConfigs={{
+        redirectUrl: "https://account.venmo.com/",
+        urlFilters: ["https://account.venmo.com/api/stories*"]
+      }}
+      applicationConfigs={{
+        appServer: venmoServer,
+        appName: "Venmo",
+      }}
+      onNotarizationResult={onNotarizationResult}
+      defaultNotaryFlowConfigs={{
+        defaultNotaryFlow: true,
+        buildAuthHeaders: buildAuthHeaders,
+        queryPath: "",
+        queryMethod: "",
+        buildDataPathWithResponse: buildDataPathWithResponse,
+        dataMethod: "GET",
+        keysToNotarize: [["stories", "amount"]],
+      }}
+    />
   )
 }
 
