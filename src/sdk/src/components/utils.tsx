@@ -5,14 +5,10 @@ export async function notarizeRequest(
   requestStringsToNotarize,
   responseStringsToNotarize,
   keysToNotarize,
+  notaryServerHost,
+  notaryServerSsl,
+  websockifyServer,
 ) {
-  // TODO: Get a new websocket proxy based on server
-  const serverToWebsockifyPort = {
-    "api.robinhood.com": 61289,
-    "app.revolut.com": 61289,
-    "account.venmo.com": 61289,
-  }
-
   return new Promise((resolve, reject) => {
     const worker = new Worker("./wasm_worker.js", { type: "module" });
     var subworkers: Worker[] = []
@@ -48,21 +44,14 @@ export async function notarizeRequest(
       requestStringsToNotarize,
       responseStringsToNotarize,
       keysToNotarize,
-      "127.0.0.1:7047",
-      false,
-      `ws://127.0.0.1:${serverToWebsockifyPort[server]}`,
+      notaryServerHost,
+      notaryServerSsl,
+      websockifyServer,
     );
   })
 }
 
-export async function sendRequest(server, path, method, data, headers) {
-  // TODO: Get a new websocket proxy based on server
-  const serverToWebsockifyPort = {
-    "api.robinhood.com": 61289,
-    "app.revolut.com": 61289,
-    "account.venmo.com": 61289,
-  }
-
+export async function sendRequest(server, path, method, data, headers, websockifyServer) {
   return new Promise<string>((resolve, reject) => {
     const worker = new Worker("./wasm_worker.js", { type: "module" });
     worker.onmessage = async function (e) {
@@ -80,7 +69,7 @@ export async function sendRequest(server, path, method, data, headers) {
     // @ts-ignore
     requestSender.sendRequest(
       server, path, method, JSON.stringify(data), headers,
-      `ws://127.0.0.1:${serverToWebsockifyPort[server]}`,
+      websockifyServer,
     );
   })
 }

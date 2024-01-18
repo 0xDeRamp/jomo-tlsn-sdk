@@ -3,7 +3,24 @@ import { Button, Collapse, Stack, Typography, CircularProgress } from '@mui/mate
 import Iconify from './iconify';
 import * as utils from './utils'
 
-function JomoTlsnNotary() {
+function JomoTlsnNotary({
+  notaryServers: {
+    notaryServerHost,
+    notaryServerSsl,
+    websockifyServer,
+  },
+  extensionId = "nmdnfckjjghlbjeodefnapacfnocpdgm",
+  extensionName = "jomo-copilot",
+  extensionConfigs: {
+    redirectUrl,
+    urlFilters,
+  },
+  applicationConfigs: {
+    appServer,
+    appName,
+  },
+  onNotarizationResult,
+}) {
   const [needsExtension, setNeedsExtension] = useState(false)
   const [triggerExtensionInstall, setTriggerExtensionInstall] = useState(false)
   const firstMount = useRef(true)
@@ -19,7 +36,7 @@ function JomoTlsnNotary() {
       try {
         // @ts-ignore
         // eslint-disable-next-line no-undef
-        chrome.runtime.sendMessage("nmdnfckjjghlbjeodefnapacfnocpdgm", {}, {}, () => { });
+        chrome.runtime.sendMessage(extensionId, {}, {}, () => { });
         setNeedsExtension(false)
         extensionFound.current = true
         console.log("extension found")
@@ -32,31 +49,30 @@ function JomoTlsnNotary() {
     }
   }
 
-  async function notarizeRevolutLastPayment() {
+  async function startNotarize() {
     setLoading(true)
     setLoadingText("Logging in...")
-    const server = "app.revolut.com"
 
     // @ts-ignore
     // eslint-disable-next-line no-undef
     chrome.runtime.sendMessage(
-      "nmdnfckjjghlbjeodefnapacfnocpdgm",
+      extensionId,
       {
         type: "prepareSession",
-        redirectUrl: "https://app.revolut.com/home",
-        urlFilters: ["https://app.revolut.com/api/retail/user/current/wallet"]
+        redirectUrl: redirectUrl,
+        urlFilters: urlFilters,
       },
       {},
       (response) => {
         const cookie = response.headers["Cookie"]
         const deviceId = response.headers["x-device-id"]
         const userAgent = response.headers["User-Agent"]
-        notarizeRevolutLastPaymentWithHeaders(server, cookie, deviceId, userAgent)
+        notarizeWithAuth(appServer, cookie, deviceId, userAgent)
       },
     )
   }
 
-  async function notarizeRevolutLastPaymentWithHeaders(server, cookie, deviceId, userAgent) {
+  async function notarizeWithAuth(server, cookie, deviceId, userAgent) {
     const headersWithBearer = new Map([
       ["Cookie", cookie],
       ["X-Device-Id", deviceId],
@@ -66,7 +82,10 @@ function JomoTlsnNotary() {
 
     const accountsPath = "api/retail/user/current/wallet"
     const accountsMethod = "GET"
-    const accountsResponse = JSON.parse(await utils.sendRequest(server, accountsPath, accountsMethod, {}, headersWithBearer))
+    const accountsResponse = JSON.parse(await utils.sendRequest(
+      server, accountsPath, accountsMethod, {}, headersWithBearer,
+      websockifyServer,
+    ))
     const account = accountsResponse["pockets"][0]["id"] || null
     if (!account) {
       setLoadingFailed(true)
@@ -83,9 +102,12 @@ function JomoTlsnNotary() {
       [],
       [],
       keysToNotarize,
+      notaryServerHost,
+      notaryServerSsl,
+      websockifyServer,
     )
 
-    console.log(notarizationProof)
+    onNotarizationResult(notarizationProof)
     setLoaded(true)
     setLoadingFailed(false)
     setLoading(false)
@@ -103,10 +125,10 @@ function JomoTlsnNotary() {
     <Stack gap={2} alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }}>
       {triggerExtensionInstall &&
         <Collapse in={needsExtension}>
-          <Stack alignItems={"center"} paddingLeft={2} mt={2}>
+          <Stack alignItems={"center"} mt={2}>
             <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
               <Button variant="contained" onClick={() => {
-                window.open("https://chrome.google.com/webstore/detail/jomo-copilot/nmdnfckjjghlbjeodefnapacfnocpdgm", '_blank');
+                window.open(`https://chrome.google.com/webstore/detail/${extensionName}/${extensionId}`, '_blank');
               }}>Install Jomo Copilot Extension</Button>
             </Stack>
           </Stack>
@@ -116,7 +138,7 @@ function JomoTlsnNotary() {
       <Stack alignItems={"center"}>
         <Collapse in={!loading && !loadingFailed && !loaded} sx={{ width: 1, maxWidth: "450px" }}>
           <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-            <Button disabled={loading || needsExtension} variant="contained" onClick={() => { notarizeRevolutLastPayment() }}>Login Revolut</Button>
+            <Button disabled={loading || needsExtension} variant="contained" onClick={() => { startNotarize() }}>Login {appName}</Button>
           </Stack>
         </Collapse>
         <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
