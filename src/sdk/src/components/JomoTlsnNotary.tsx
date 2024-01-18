@@ -19,6 +19,23 @@ function JomoTlsnNotary({
     appServer,
     appName,
   },
+  defaultNotaryFlowConfigs: {
+    defaultNotaryFlow,
+    buildAuthHeaders,
+    queryPath,
+    queryMethod,
+    buildDataPathWithResponse,
+    dataMethod,
+    keysToNotarize,
+  } = {
+    defaultNotaryFlow: false,
+    buildAuthHeaders: (_) => { },
+    queryPath: "",
+    queryMethod: "",
+    buildDataPathWithResponse: (_) => { },
+    dataMethod: "",
+    keysToNotarize: [["example"]],
+  },
   onNotarizationResult,
 }) {
   const [needsExtension, setNeedsExtension] = useState(false)
@@ -53,6 +70,8 @@ function JomoTlsnNotary({
     setLoading(true)
     setLoadingText("Logging in...")
 
+    console.log("default notary flow:", defaultNotaryFlow)
+
     // @ts-ignore
     // eslint-disable-next-line no-undef
     chrome.runtime.sendMessage(
@@ -64,41 +83,27 @@ function JomoTlsnNotary({
       },
       {},
       (response) => {
-        const cookie = response.headers["Cookie"]
-        const deviceId = response.headers["x-device-id"]
-        const userAgent = response.headers["User-Agent"]
-        notarizeWithAuth(appServer, cookie, deviceId, userAgent)
+        notarizeWithAuth(appServer, buildAuthHeaders(response))
       },
     )
   }
 
-  async function notarizeWithAuth(server, cookie, deviceId, userAgent) {
-    const headersWithBearer = new Map([
-      ["Cookie", cookie],
-      ["X-Device-Id", deviceId],
-      ["User-Agent", userAgent],
-      ["Host", server],
-    ])
-
-    const accountsPath = "api/retail/user/current/wallet"
-    const accountsMethod = "GET"
+  async function notarizeWithAuth(server, authHeaders) {
     const accountsResponse = JSON.parse(await utils.sendRequest(
-      server, accountsPath, accountsMethod, {}, headersWithBearer,
+      server, queryPath, queryMethod, {}, authHeaders,
       websockifyServer,
     ))
-    const account = accountsResponse["pockets"][0]["id"] || null
-    if (!account) {
+
+    setLoadingText("Notarizing ...")
+
+    const dataPath = buildDataPathWithResponse(accountsResponse)
+    if (dataPath === null) {
       setLoadingFailed(true)
       return
     }
 
-    setLoadingText("Notarizing ...")
-
-    const dataPath = `api/retail/user/current/transactions/last?count=1&internalPocketId=${account}`
-    const dataMethod = "GET"
-    const keysToNotarize = [["account"], ["amount"], ["category"], ["comment"], ["completeDate"], ["id"], ["state"], ["recipient", "id"], ["recipient", "code"], ["currency"]]
     const notarizationProof = await utils.notarizeRequest(
-      server, dataPath, dataMethod, {}, headersWithBearer,
+      server, dataPath, dataMethod, {}, authHeaders,
       [],
       [],
       keysToNotarize,
