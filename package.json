@@ -1,5 +1,5 @@
 {
-  "name": "jomo-tlsn-sdk",
+  "name": "jomo-tlsn-sdk-example",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3001",
