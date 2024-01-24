@@ -93,6 +93,8 @@ function RobinhoodRoi() {
           notaryServerSsl: false,
           websockifyServer: "ws://127.0.0.1:61289",
         }}
+        extensionId="nmdnfckjjghlbjeodefnapacfnocpdgm"
+        extensionName="jomo-copilot"
         extensionConfigs={{
           redirectUrl: "https://robinhood.com",
           urlFilters: ["https://api.robinhood.com/accounts/"]

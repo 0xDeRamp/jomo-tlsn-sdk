@@ -42,22 +42,62 @@ function JomoTlsnNotary({
   const [triggerExtensionInstall, setTriggerExtensionInstall] = useState(false)
   const firstMount = useRef(true)
   const extensionFound = useRef(false)
+  const browser = useRef("")
 
   const [loading, setLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [loadingFailed, setLoadingFailed] = useState(false)
   const [loadingText, setLoadingText] = useState("")
 
+  function getBrowser() {
+    if (typeof window != "undefined") {
+      if (window.navigator.userAgent.match("Chrome")) {
+        return "chrome"
+      }
+      if (window.navigator.userAgent.match("Firefox")) {
+        return "firefox"
+      }
+    }
+    return "na";
+  }
+
+  function chromeHasExtension() {
+    try {
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      chrome.runtime.sendMessage(extensionId, {}, {}, () => { });
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  function firefoxHasExtension() {
+    if (window.hasOwnProperty('derampInject')) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   async function checkExtension() {
     if (!extensionFound.current) {
-      try {
-        // @ts-ignore
-        // eslint-disable-next-line no-undef
-        chrome.runtime.sendMessage(extensionId, {}, {}, () => { });
+      if (browser.current === "") {
+        browser.current = getBrowser()
+      }
+
+      var hasExtension = false
+      if (browser.current === "chrome") {
+        hasExtension = chromeHasExtension()
+      } else if (browser.current === "firefox") {
+        hasExtension = firefoxHasExtension()
+      }
+
+      if (hasExtension) {
         setNeedsExtension(false)
         extensionFound.current = true
         console.log("extension found")
-      } catch {
+      } else {
         setNeedsExtension(true)
         setTriggerExtensionInstall(true)
         console.log("extension not found")
@@ -72,20 +112,31 @@ function JomoTlsnNotary({
 
     console.log("default notary flow:", defaultNotaryFlow)
 
-    // @ts-ignore
-    // eslint-disable-next-line no-undef
-    chrome.runtime.sendMessage(
-      extensionId,
-      {
+    if (browser.current === "chrome") {
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      chrome.runtime.sendMessage(
+        extensionId,
+        {
+          type: "prepareSession",
+          redirectUrl: redirectUrl,
+          urlFilters: urlFilters,
+        },
+        {},
+        (response) => {
+          notarizeWithAuth(appServer, buildAuthHeaders(response))
+        },
+      )
+    } else if (browser.current === "firefox") {
+      // @ts-ignore
+      // eslint-disable-next-line no-undef
+      const response = await window.derampInject({
         type: "prepareSession",
         redirectUrl: redirectUrl,
         urlFilters: urlFilters,
-      },
-      {},
-      (response) => {
-        notarizeWithAuth(appServer, buildAuthHeaders(response))
-      },
-    )
+      })
+      notarizeWithAuth(appServer, buildAuthHeaders(response))
+    }
   }
 
   async function notarizeWithAuth(server, authHeaders) {
