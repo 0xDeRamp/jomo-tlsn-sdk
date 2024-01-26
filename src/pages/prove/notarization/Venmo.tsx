@@ -24,32 +24,32 @@ function Venmo() {
     console.log(res)
   }
 
-  return (
-    <JomoTlsnNotary
-      notaryServers={{
-        notaryServerHost: "127.0.0.1:7047",
-        notaryServerSsl: false,
-        websockifyServer: "ws://127.0.0.1:61289",
-      }}
-      extensionConfigs={{
-        redirectUrl: "https://account.venmo.com/",
-        urlFilters: ["https://account.venmo.com/api/stories*"]
-      }}
-      applicationConfigs={{
-        appServer: venmoServer,
-        appName: "Venmo",
-      }}
-      onNotarizationResult={onNotarizationResult}
-      defaultNotaryFlowConfigs={{
-        defaultNotaryFlow: true,
-        buildAuthHeaders: buildAuthHeaders,
-        queryPath: "",
-        queryMethod: "",
-        buildDataPathWithResponse: buildDataPathWithResponse,
-        dataMethod: "GET",
-        keysToNotarize: [["stories", "amount"]],
-      }}
-    />
+  return (<></>
+    // <JomoTlsnNotary
+    //   notaryServers={{
+    //     notaryServerHost: "127.0.0.1:7047",
+    //     notaryServerSsl: false,
+    //     websockifyServer: "ws://127.0.0.1:61289",
+    //   }}
+    //   extensionConfigs={{
+    //     redirectUrl: "https://account.venmo.com/",
+    //     urlFilters: ["https://account.venmo.com/api/stories*"]
+    //   }}
+    //   applicationConfigs={{
+    //     appServer: venmoServer,
+    //     appName: "Venmo",
+    //   }}
+    //   onNotarizationResult={onNotarizationResult}
+    //   defaultNotaryFlowConfigs={{
+    //     defaultNotaryFlow: true,
+    //     buildAuthHeaders: buildAuthHeaders,
+    //     queryPath: "",
+    //     queryMethod: "",
+    //     buildDataPathWithResponse: buildDataPathWithResponse,
+    //     dataMethod: "GET",
+    //     keysToNotarize: [["stories", "amount"]],
+    //   }}
+    // />
   )
 }
 

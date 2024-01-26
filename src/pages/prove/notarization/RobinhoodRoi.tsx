@@ -87,7 +87,7 @@ function RobinhoodRoi() {
         </ToggleButtonGroup>
       </Stack>
 
-      <JomoTlsnNotary
+      {/* <JomoTlsnNotary
         notaryServers={{
           notaryServerHost: "127.0.0.1:7047",
           notaryServerSsl: false,
@@ -113,7 +113,7 @@ function RobinhoodRoi() {
           dataMethod: "GET",
           keysToNotarize: [["total_return"], ["span"]],
         }}
-      />
+      /> */}
 
       {loaded &&
         <Stack gap={1} alignItems={"left"} paddingX={5} width={1}>

@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Button, Collapse, Stack, Typography, CircularProgress } from '@mui/material';
-import Iconify from './iconify';
+import { Collapse, Stack, Box } from '@mui/material';
 import * as utils from './utils'
 
 function JomoTlsnNotary({
@@ -10,14 +9,12 @@ function JomoTlsnNotary({
     websockifyServer,
   },
   extensionId = "nmdnfckjjghlbjeodefnapacfnocpdgm",
-  extensionName = "jomo-copilot",
   extensionConfigs: {
     redirectUrl,
     urlFilters,
   },
   applicationConfigs: {
     appServer,
-    appName,
   },
   defaultNotaryFlowConfigs: {
     defaultNotaryFlow,
@@ -37,6 +34,12 @@ function JomoTlsnNotary({
     keysToNotarize: [["example"]],
   },
   onNotarizationResult,
+  childExtensionNotFound,
+  childExtensionInstalled,
+  childExtensionFound,
+  childVerificationInProgress,
+  childVerificationComplete,
+  childVerificationFail = (<></>),
 }) {
   const [needsExtension, setNeedsExtension] = useState(false)
   const [triggerExtensionInstall, setTriggerExtensionInstall] = useState(false)
@@ -47,7 +50,6 @@ function JomoTlsnNotary({
   const [loading, setLoading] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [loadingFailed, setLoadingFailed] = useState(false)
-  const [loadingText, setLoadingText] = useState("")
 
   function getBrowser() {
     if (typeof window != "undefined") {
@@ -108,7 +110,6 @@ function JomoTlsnNotary({
 
   async function startNotarize() {
     setLoading(true)
-    setLoadingText("Logging in...")
 
     console.log("default notary flow:", defaultNotaryFlow)
 
@@ -148,8 +149,6 @@ function JomoTlsnNotary({
       ))
     }
 
-    setLoadingText("Notarizing ...")
-
     const dataPath = buildDataPathWithResponse(accountsResponse)
     if (dataPath === null) {
       setLoadingFailed(true)
@@ -181,42 +180,35 @@ function JomoTlsnNotary({
   }, [])
 
   return (
-    <Stack gap={2} alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }}>
+    <Box alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }}>
       {triggerExtensionInstall &&
-        <Collapse in={needsExtension}>
-          <Stack alignItems={"center"} mt={2}>
-            <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-              <Button variant="contained" onClick={() => {
-                window.open(`https://chrome.google.com/webstore/detail/${extensionName}/${extensionId}`, '_blank');
-              }}>Install Jomo Copilot Extension</Button>
-            </Stack>
-          </Stack>
-        </Collapse>
+        <>
+          <Collapse in={needsExtension}>
+            {childExtensionNotFound}
+          </Collapse>
+          <Collapse in={!needsExtension}>
+            {childExtensionInstalled}
+          </Collapse>
+        </>
       }
 
-      <Stack alignItems={"center"}>
-        <Collapse in={!loading && !loadingFailed && !loaded} sx={{ width: 1, maxWidth: "450px" }}>
-          <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-            <Button disabled={loading || needsExtension} variant="contained" onClick={() => { startNotarize() }}>Login {appName}</Button>
-          </Stack>
-        </Collapse>
-        <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
-          <Stack direction={"row"} alignItems={"center"} gap={1} justifyContent={"center"}>
-            <CircularProgress size={24} color="primary" />
-            <Typography variant="body1" textAlign={"center"}>{loadingText}</Typography>
-          </Stack>
-        </Collapse>
-        <Collapse in={loadingFailed}>
-          <Typography variant="body1">Failed to fetch data</Typography>
-        </Collapse>
-        <Collapse in={loaded}>
-          <Stack direction={"row"} alignItems={"center"} gap={1} justifyContent={"center"}>
-            <Iconify height={36} width={36} color={"success.main"} icon="material-symbols:check" />
-            <Typography variant="body1">Notarized successfully</Typography>
-          </Stack>
-        </Collapse>
-      </Stack>
-    </Stack >
+      <Collapse in={!needsExtension}>
+        <Stack alignItems={"center"}>
+          <Collapse in={!loading && !loadingFailed && !loaded} sx={{ width: 1, maxWidth: "450px" }} onClick={startNotarize}>
+            {childExtensionFound}
+          </Collapse>
+          <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
+            {childVerificationInProgress}
+          </Collapse>
+          <Collapse in={loadingFailed}>
+            {childVerificationFail}
+          </Collapse>
+          <Collapse in={loaded}>
+            {childVerificationComplete}
+          </Collapse>
+        </Stack>
+      </Collapse>
+    </Box >
   )
 }
 
