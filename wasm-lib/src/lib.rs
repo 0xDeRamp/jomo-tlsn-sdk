@@ -588,14 +588,6 @@ pub async fn notarizeRequest(
         .expect_throw("assume the notary ws connection succeeds");
     let notary_ws_stream_into = notary_ws_stream.into_io();
 
-    /*
-       Connect Application Server with websocket proxy
-    */
-    let (_client_ws_meta, client_ws_stream) = WsMeta::connect(client_websocket_url, None)
-        .await
-        .expect_throw("assume the client ws connection succeeds");
-    let client_ws_stream_into = client_ws_stream.into_io();
-
     // Basic default prover config
     let config = ProverConfig::builder()
         .id(notarization_response.session_id)
@@ -609,10 +601,20 @@ pub async fn notarizeRequest(
         .await
         .unwrap();
 
+    /*
+       Connect Application Server with websocket proxy
+    */
+    let (_client_ws_meta, client_ws_stream) = WsMeta::connect(client_websocket_url, None)
+        .await
+        .expect_throw("assume the client ws connection succeeds");
+    let client_ws_stream_into = client_ws_stream.into_io();
+
     // Bind the Prover to the server connection.
     // The returned `mpc_tls_connection` is an MPC TLS connection to the Server: all data written
     // to/read from it will be encrypted/decrypted using MPC with the Notary.
     let (mpc_tls_connection, prover_fut) = prover.connect(client_ws_stream_into).await.unwrap();
+
+    let prover_ctrl = prover_fut.control();
 
     let (prover_sender, prover_receiver) = oneshot::channel();
     let handled_prover_fut = async {
@@ -677,7 +679,9 @@ pub async fn notarizeRequest(
         })
         .unwrap();
 
-    post_update(format!("Start notarizing request to {server}").as_str());
+    post_update(format!("Start notarizing request to https://{server}/{path}").as_str());
+
+    prover_ctrl.defer_decryption().await.unwrap();
 
     let response = request_sender.send_request(request).await.unwrap();
 

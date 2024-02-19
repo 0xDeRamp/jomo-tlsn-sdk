@@ -2,7 +2,7 @@
 name = "wasm-lib"
 version = "0.1.0"
 edition = "2021"
-resolver = "2"
+rust-version = "1.56"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -13,11 +13,13 @@ crate-type = ["cdylib"]
 hyper = { version = "0.14", features = ["client", "http1"] }
 bytes = "1.4.0"
 serde_json = "1.0"
-wasm-bindgen = "0.2.78"
+wasm-bindgen = "0.2.87"
 wasm-bindgen-futures = "0.4.37"
 js-sys = "0.3.64"
 getrandom = { version = "0.2", features = ["js"] }
-ws_stream_wasm = { version = "0.7.4", git = "https://github.com/mhchia/ws_stream_wasm", branch = "dev" }
+# ws_stream_wasm = { version = "0.7.4", git = "https://github.com/mhchia/ws_stream_wasm", branch = "dev" }
+# Use the patched ws_stream_wasm to fix the issue https://github.com/najamelan/ws_stream_wasm/issues/12#issuecomment-1711902958
+ws_stream_wasm = {version = "0.7.4", git = "https://github.com/tlsnotary/ws_stream_wasm", rev = "2ed12aad9f0236e5321f577672f309920b2aef51"}
 
 rayon = "1.5"
 wasm-bindgen-rayon = "1.0"
@@ -28,6 +30,8 @@ serde = { version = "1.0.147", features = ["derive"] }
 serde-wasm-bindgen = "0.6.1"
 url = { version = "2.0", features = ["serde"] }
 webpki-roots = "0.23"
+
+ring = {version = "0.17", features = ["wasm32_unknown_unknown_js"]}
 
 tlsn-tls-client = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk" }
 tlsn-tls-client-async = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk" }
@@ -41,7 +45,6 @@ chrono = "0.4"
 elliptic-curve = { version = "0.13.5", features = ["pkcs8"] }
 p256 = { version = "0.13", features = ["pem", "ecdsa"] }
 
-console_error_panic_hook = "0.1.7"
 tracing-web = "0.1.2"
 tracing-subscriber = { version = "0.3", features = ["time"] }
 
@@ -75,26 +78,26 @@ features = [
   'Response',
 ]
 
-[patch.crates-io.ring]
-git="https://github.com/betrusted-io/ring-xous"
-branch="0.16.20-cleanup"
+# [patch.crates-io.ring]
+# git="https://github.com/betrusted-io/ring-xous"
+# branch="0.16.20-cleanup"
 
-[patch.crates-io.ws_stream_wasm]
-# path = "../../../others/ws_stream_wasm"
-# Use the patched ws_stream_wasm to fix the issue https://github.com/najamelan/ws_stream_wasm/issues/12#issuecomment-1711902958
-git="https://github.com/mhchia/ws_stream_wasm"
-branch="dev"
+# [patch.crates-io.ws_stream_wasm]
+# # path = "../../../others/ws_stream_wasm"
+# # Use the patched ws_stream_wasm to fix the issue https://github.com/najamelan/ws_stream_wasm/issues/12#issuecomment-1711902958
+# git="https://github.com/mhchia/ws_stream_wasm"
+# branch="dev"
 
 # [patch.'https://github.com/tlsnotary/tlsn-utils']
 # # Use single cpu backend
-# tlsn-utils = { git = 'https://www.github.com/mhchia/tlsn-utils.git', rev = "46327f0" }
-# tlsn-utils-aio = { git = 'https://www.github.com/mhchia/tlsn-utils.git', rev = "46327f0" }
+# tlsn-utils = { git = 'https://www.github.com/chcharcharlie/tlsn-utils.git', branch = "jomo-stbackend" }
+# tlsn-utils-aio = { git = 'https://www.github.com/chcharcharlie/tlsn-utils.git', branch = "jomo-stbackend" }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
 # all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
 # code size when deploying.
-console_error_panic_hook = { version = "0.1.7", optional = true }
+console_error_panic_hook = {version = "0.1.7"}
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.34"
