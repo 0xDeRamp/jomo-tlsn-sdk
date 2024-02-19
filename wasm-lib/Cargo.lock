@@ -40,9 +40,9 @@ dependencies = [
 
 [[package]]
 name = "aes"
-version = "0.8.3"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac1f845298e95f983ff1944b728ae08b8cebab80d684f0a832ed0fc74dfa27e2"
+checksum = "b169f7a6d4742236a0a00c541b845991d0ac43e546831af1249753ab4c3aa3a0"
 dependencies = [
  "cfg-if",
  "cipher 0.4.4",
@@ -65,9 +65,9 @@ dependencies = [
 
 [[package]]
 name = "ahash"
-version = "0.8.7"
+version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77c3a9648d43b9cd48db467b3f87fdd6e146bcc88ab0180006cef2179fe11d01"
+checksum = "42cd52102d3df161c77a887b608d7a4897d7cc112886a9537b738a887a03aaff"
 dependencies = [
  "cfg-if",
  "once_cell",
@@ -101,9 +101,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.79"
+version = "1.0.80"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca"
+checksum = "5ad32ce52e4161730f7098c077cd2ed6229b5804ccf99e5366be1ab72a98b4e1"
 
 [[package]]
 name = "ark-ec"
@@ -247,13 +247,13 @@ dependencies = [
 
 [[package]]
 name = "async-channel"
-version = "2.1.1"
+version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ca33f4bc4ed1babef42cad36cc1f51fa88be00420404e5b1e80ab1b18f7678c"
+checksum = "f28243a43d821d11341ab73c80bed182dc015c514b951616cf79bd4af39af0c3"
 dependencies = [
  "concurrent-queue",
- "event-listener 4.0.3",
- "event-listener-strategy",
+ "event-listener 5.1.0",
+ "event-listener-strategy 0.5.0",
  "futures-core",
  "pin-project-lite",
 ]
@@ -278,7 +278,7 @@ version = "2.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "05b1b633a2115cd122d73b955eadd9916c18c8f510ec9cd1686404c60ad1c29c"
 dependencies = [
- "async-channel 2.1.1",
+ "async-channel 2.2.0",
  "async-executor",
  "async-io 2.3.1",
  "async-lock 3.3.0",
@@ -319,7 +319,7 @@ dependencies = [
  "futures-io",
  "futures-lite 2.2.0",
  "parking",
- "polling 3.4.0",
+ "polling 3.5.0",
  "rustix 0.38.31",
  "slab",
  "tracing",
@@ -342,7 +342,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d034b430882f8381900d3fe6f0aaa3ad94f2cb4ac519b429692a1bc2dda4ae7b"
 dependencies = [
  "event-listener 4.0.3",
- "event-listener-strategy",
+ "event-listener-strategy 0.4.0",
  "pin-project-lite",
 ]
 
@@ -386,7 +386,7 @@ checksum = "c980ee35e870bd1a4d2c8294d4c04d0499e67bca1e4b5cefcc693c2fa00caea9"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -542,7 +542,7 @@ version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a37913e8dc4ddcc604f0c6d3bf2887c995153af3611de9e23c352b44c1b9118"
 dependencies = [
- "async-channel 2.1.1",
+ "async-channel 2.2.0",
  "async-lock 3.3.0",
  "async-task",
  "fastrand 2.0.1",
@@ -554,15 +554,15 @@ dependencies = [
 
 [[package]]
 name = "bumpalo"
-version = "3.14.0"
+version = "3.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f30e7476521f6f8af1a1c4c0b8cc94f0bee37d91763d0ca2665f299b6cd8aec"
+checksum = "d32a994c2b3ca201d9b263612a374263f05e7adde37c4707f693dcd375076d1f"
 
 [[package]]
 name = "bytemuck"
-version = "1.14.2"
+version = "1.14.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ea31d69bda4949c1c1562c1e6f042a1caefac98cdc8a298260a2ff41c1e2d42b"
+checksum = "a2ef034f05691a48569bd920a96c81b9d91bbad1ab5ac7c4616c1f6ef36cb79f"
 dependencies = [
  "bytemuck_derive",
 ]
@@ -575,7 +575,7 @@ checksum = "965ab7eb5f8f97d2a083c799f3a1b994fc397b2fe2da5d1da1626ce15a39f2b1"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -610,9 +610,9 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "chrono"
-version = "0.4.33"
+version = "0.4.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f13690e35a5e4ace198e7beea2895d29f3a9cc55015fcebe6336bd2010af9eb"
+checksum = "5bc015644b92d5890fab7489e49d21f879d5c990186827d42ec511919404f38b"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
@@ -644,7 +644,7 @@ dependencies = [
 [[package]]
 name = "clmul"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
  "bytemuck",
  "cfg-if",
@@ -797,7 +797,7 @@ checksum = "f46882e17999c6cc590af592290432be3bce0428cb0d5f8b6715e4dc7b383eb3"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -812,12 +812,12 @@ dependencies = [
 
 [[package]]
 name = "darling"
-version = "0.20.5"
+version = "0.20.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc5d6b04b3fd0ba9926f945895de7d806260a2d7431ba82e7edaecb043c4c6b8"
+checksum = "c376d08ea6aa96aafe61237c7200d1241cb177b7d3a542d791f2d118e9cbb955"
 dependencies = [
- "darling_core 0.20.5",
- "darling_macro 0.20.5",
+ "darling_core 0.20.6",
+ "darling_macro 0.20.6",
 ]
 
 [[package]]
@@ -836,16 +836,16 @@ dependencies = [
 
 [[package]]
 name = "darling_core"
-version = "0.20.5"
+version = "0.20.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04e48a959bcd5c761246f5d090ebc2fbf7b9cd527a492b07a67510c108f1e7e3"
+checksum = "33043dcd19068b8192064c704b3f83eb464f91f1ff527b44a4e2b08d9cdb8855"
 dependencies = [
  "fnv",
  "ident_case",
  "proc-macro2",
  "quote",
  "strsim",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -861,13 +861,13 @@ dependencies = [
 
 [[package]]
 name = "darling_macro"
-version = "0.20.5"
+version = "0.20.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d1545d67a2149e1d93b7e5c7752dce5a7426eb5d1357ddcfd89336b94444f77"
+checksum = "c5a91391accf613803c2a9bf9abccdbaa07c54b4244a5b64883f9c3c137c86be"
 dependencies = [
- "darling_core 0.20.5",
+ "darling_core 0.20.6",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -1013,9 +1013,9 @@ dependencies = [
 
 [[package]]
 name = "either"
-version = "1.9.0"
+version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a26ae43d7bcc3b814de94796a5e736d4029efb0ee900c12e2d54c993ad1a1e07"
+checksum = "11157ac094ffbdde99aa67b23417ebdd801842852b500e395a45a9c0aac03e4a"
 
 [[package]]
 name = "elliptic-curve"
@@ -1049,7 +1049,7 @@ dependencies = [
  "num-traits",
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -1061,7 +1061,7 @@ dependencies = [
  "heck",
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -1092,12 +1092,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "event-listener"
+version = "5.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b7ad6fd685ce13acd6d9541a30f6db6567a7a24c9ffd4ba2955d29e3f22c8b27"
+dependencies = [
+ "concurrent-queue",
+ "parking",
+ "pin-project-lite",
+]
+
+[[package]]
 name = "event-listener-strategy"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "958e4d70b6d5e81971bebec42271ec641e7ff4e170a6fa605f2b8a8b65cb97d3"
 dependencies = [
  "event-listener 4.0.3",
+ "pin-project-lite",
+]
+
+[[package]]
+name = "event-listener-strategy"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "feedafcaa9b749175d5ac357452a9d41ea2911da598fde46ce1fe02c37751291"
+dependencies = [
+ "event-listener 5.1.0",
  "pin-project-lite",
 ]
 
@@ -1231,7 +1252,7 @@ checksum = "87750cf4b7a4c0625b1529e4c543c2182106e4dedc60a2a6455e00d212c489ac"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -1344,9 +1365,9 @@ checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
 
 [[package]]
 name = "hermit-abi"
-version = "0.3.5"
+version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d0c62115964e08cb8039170eb33c1d0e2388a256930279edca206fff675f82c3"
+checksum = "bd5256b483761cd23699d0da46cc6fd2ee3be420bbe6d020ae4a091e70b7e9fd"
 
 [[package]]
 name = "hkdf"
@@ -1600,18 +1621,18 @@ name = "ludi-macros"
 version = "0.1.0"
 source = "git+https://github.com/sinui0/ludi?rev=b590de5#b590de59e700ec2dc3295a74111536f192206cd5"
 dependencies = [
- "darling 0.20.5",
+ "darling 0.20.6",
  "heck",
  "proc-macro-error",
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
 name = "matrix-transpose"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
  "thiserror",
 ]
@@ -1634,7 +1655,7 @@ dependencies = [
 [[package]]
 name = "mpz-circuits"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
  "bincode",
  "itybity",
@@ -1651,7 +1672,7 @@ dependencies = [
 [[package]]
 name = "mpz-circuits-macros"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1661,9 +1682,9 @@ dependencies = [
 [[package]]
 name = "mpz-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
- "aes 0.8.3",
+ "aes 0.8.4",
  "bcs",
  "blake3",
  "bytemuck",
@@ -1685,9 +1706,9 @@ dependencies = [
 [[package]]
 name = "mpz-garble"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
- "aes 0.8.3",
+ "aes 0.8.4",
  "async-trait",
  "cipher 0.4.4",
  "derive_builder 0.11.2",
@@ -1712,9 +1733,9 @@ dependencies = [
 [[package]]
 name = "mpz-garble-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
- "aes 0.8.3",
+ "aes 0.8.4",
  "blake3",
  "cipher 0.4.4",
  "derive_builder 0.11.2",
@@ -1733,10 +1754,11 @@ dependencies = [
 [[package]]
 name = "mpz-ot"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
- "aes 0.8.3",
+ "aes 0.8.4",
  "async-trait",
+ "cfg-if",
  "cipher 0.4.4",
  "enum-try-as-inner",
  "futures",
@@ -1758,9 +1780,9 @@ dependencies = [
 [[package]]
 name = "mpz-ot-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
- "aes 0.8.3",
+ "aes 0.8.4",
  "blake3",
  "bytemuck",
  "cfg-if",
@@ -1786,7 +1808,7 @@ dependencies = [
 [[package]]
 name = "mpz-share-conversion"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
  "async-trait",
  "derive_builder 0.11.2",
@@ -1804,7 +1826,7 @@ dependencies = [
 [[package]]
 name = "mpz-share-conversion-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=ecb8c54#ecb8c54174a870ac31b6bd64d1a57fab73768e7f"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
 dependencies = [
  "ark-ff",
  "ark-secp256r1",
@@ -1853,19 +1875,18 @@ checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
 
 [[package]]
 name = "num-integer"
-version = "0.1.45"
+version = "0.1.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "225d3389fb3509a24c93f5c29eb6bde2586b98d9f016636dff58d7c6f7569cd9"
+checksum = "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f"
 dependencies = [
- "autocfg",
  "num-traits",
 ]
 
 [[package]]
 name = "num-traits"
-version = "0.2.17"
+version = "0.2.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "39e3200413f237f41ab11ad6d161bc7239c84dcb631773ccd7de3dfe4b5c267c"
+checksum = "da0df0e5185db44f69b44f26786fe401b6c293d1907744beaa7fa62b2e5a517a"
 dependencies = [
  "autocfg",
 ]
@@ -1961,6 +1982,51 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3148f5046208a5d56bcfc03053e3ca6334e51da8dfb19b6cdc8b306fae3283e"
 
 [[package]]
+name = "pest"
+version = "2.7.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "219c0dcc30b6a27553f9cc242972b67f75b60eb0db71f0b5462f38b058c41546"
+dependencies = [
+ "memchr",
+ "thiserror",
+ "ucd-trie",
+]
+
+[[package]]
+name = "pest_derive"
+version = "2.7.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "22e1288dbd7786462961e69bfd4df7848c1e37e8b74303dbdab82c3a9cdd2809"
+dependencies = [
+ "pest",
+ "pest_generator",
+]
+
+[[package]]
+name = "pest_generator"
+version = "2.7.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1381c29a877c6d34b8c176e734f35d7f7f5b3adaefe940cb4d1bb7af94678e2e"
+dependencies = [
+ "pest",
+ "pest_meta",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.49",
+]
+
+[[package]]
+name = "pest_meta"
+version = "2.7.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d0934d6907f148c22a3acbda520c7eed243ad7487a30f51f6ce52b58b7077a8a"
+dependencies = [
+ "once_cell",
+ "pest",
+ "sha2",
+]
+
+[[package]]
 name = "pharos"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1987,7 +2053,7 @@ checksum = "266c042b60c9c76b8d53061e52b2e0d1116abc57cefc8c5cd671619a56ac3690"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -2047,9 +2113,9 @@ dependencies = [
 
 [[package]]
 name = "polling"
-version = "3.4.0"
+version = "3.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30054e72317ab98eddd8561db0f6524df3367636884b7b21b703e4b280a84a14"
+checksum = "24f040dee2588b4963afb4e420540439d126f73fdacf4a9c486a96d840bac3c9"
 dependencies = [
  "cfg-if",
  "concurrent-queue",
@@ -2275,16 +2341,17 @@ dependencies = [
 
 [[package]]
 name = "ring"
-version = "0.17.7"
+version = "0.17.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "688c63d65483050968b2a8937f7995f443e27041a0f7700aa59b0822aedebb74"
+checksum = "c17fa4cb658e3583423e915b9f3acc01cceaee1860e33d59ebae66adc3a2dc0d"
 dependencies = [
  "cc",
+ "cfg-if",
  "getrandom",
  "libc",
  "spin 0.9.8",
  "untrusted 0.9.0",
- "windows-sys 0.48.0",
+ "windows-sys 0.52.0",
 ]
 
 [[package]]
@@ -2349,9 +2416,9 @@ dependencies = [
 
 [[package]]
 name = "rustls-pki-types"
-version = "1.2.0"
+version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a716eb65e3158e90e17cd93d855216e27bde02745ab842f2cab4a39dba1bacf"
+checksum = "048a63e5b3ac996d78d402940b5fa47973d2d080c6c6fffa1d0f19c4445310b7"
 
 [[package]]
 name = "rustls-webpki"
@@ -2365,9 +2432,9 @@ dependencies = [
 
 [[package]]
 name = "ryu"
-version = "1.0.16"
+version = "1.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f98d2aa92eebf49b69786be48e4477826b256916e84a57ff2a4f21923b48eb4c"
+checksum = "e86697c916019a8588c99b5fac3cead74ec0b4b819707a682fd4d23fa0ce1ba1"
 
 [[package]]
 name = "scoped-tls"
@@ -2387,7 +2454,7 @@ version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da046153aa2352493d6cb7da4b6e5c0c057d8a1d0a9aa8560baffdd945acd414"
 dependencies = [
- "ring 0.17.7",
+ "ring 0.17.8",
  "untrusted 0.9.0",
 ]
 
@@ -2408,9 +2475,9 @@ dependencies = [
 
 [[package]]
 name = "semver"
-version = "1.0.21"
+version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b97ed7a9823b74f99c7742f5336af7be5ecd3eeafcb1507d1fa93347b1d589b0"
+checksum = "92d43fe69e652f3df9bdc2b85b2854a0825b86e4fb76bc44d945137d053639ca"
 
 [[package]]
 name = "send_wrapper"
@@ -2455,7 +2522,7 @@ checksum = "33c85360c95e7d137454dc81d9a4ed2b8efd8fbe19cee57357b32b9771fccb67"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -2548,6 +2615,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "spansy"
+version = "0.1.0"
+source = "git+https://github.com/tlsnotary/tlsn-utils?rev=51f313d#51f313d153f1b878e583e709d66a4661b40c2b6c"
+dependencies = [
+ "bytes",
+ "httparse",
+ "pest",
+ "pest_derive",
+ "serde",
+ "thiserror",
+ "tlsn-utils",
+]
+
+[[package]]
 name = "spin"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2600,9 +2681,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.48"
+version = "2.0.49"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f3531638e407dfc0814761abb7c00a5b54992b849452a0646b7f65c9f770f3f"
+checksum = "915aea9e586f80826ee59f8453c1101f9d1c4b3964cd2460185ee8e299ada496"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2611,22 +2692,22 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.56"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d54378c645627613241d077a3a79db965db602882668f9136ac42af9ecb730ad"
+checksum = "1e45bcbe8ed29775f228095caf2cd67af7a4ccf756ebff23a306bf3e8b47b24b"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.56"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa0faa943b50f3db30a20aa7e265dbc66076993efed8463e8de414e5d06d3471"
+checksum = "a953cb265bef375dae3de6663da4d3804eee9682ea80d8e2542529b73c531c81"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -2688,8 +2769,8 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tlsn-aead"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2707,8 +2788,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-block-cipher"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2721,8 +2802,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-common"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "futures",
  "tlsn-utils-aio",
@@ -2731,8 +2812,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-core"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "bimap",
  "bytes",
@@ -2742,7 +2823,7 @@ dependencies = [
  "mpz-garble-core",
  "opaque-debug",
  "p256",
- "ring 0.17.7",
+ "ring 0.17.8",
  "rs_merkle",
  "serde",
  "thiserror",
@@ -2753,9 +2834,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "tlsn-formats"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+dependencies = [
+ "bytes",
+ "serde",
+ "spansy",
+ "thiserror",
+ "tlsn-core",
+ "tlsn-utils",
+]
+
+[[package]]
 name = "tlsn-hmac-sha256"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2771,8 +2865,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-hmac-sha256-circuits"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "mpz-circuits",
  "tracing",
@@ -2780,8 +2874,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-key-exchange"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2800,8 +2894,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-point-addition"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "mpz-core",
@@ -2814,8 +2908,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-prover"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "bytes",
  "derive_builder 0.12.0",
@@ -2828,10 +2922,11 @@ dependencies = [
  "mpz-share-conversion",
  "opaque-debug",
  "rand",
- "ring 0.17.7",
+ "ring 0.17.8",
  "thiserror",
  "tlsn-common",
  "tlsn-core",
+ "tlsn-formats",
  "tlsn-tls-client",
  "tlsn-tls-client-async",
  "tlsn-tls-core",
@@ -2845,10 +2940,10 @@ dependencies = [
 
 [[package]]
 name = "tlsn-stream-cipher"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
- "aes 0.8.3",
+ "aes 0.8.4",
  "async-trait",
  "cipher 0.4.4",
  "ctr 0.9.2",
@@ -2862,8 +2957,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-backend"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "futures",
@@ -2873,8 +2968,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-client"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "aes-gcm",
  "async-trait",
@@ -2885,7 +2980,7 @@ dependencies = [
  "log",
  "p256",
  "rand",
- "ring 0.17.7",
+ "ring 0.17.8",
  "sct",
  "sha2",
  "tlsn-tls-backend",
@@ -2896,8 +2991,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-client-async"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "bytes",
  "futures",
@@ -2909,13 +3004,13 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-core"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "futures",
  "hmac",
  "rand",
- "ring 0.17.7",
+ "ring 0.17.8",
  "rustls-pemfile",
  "sct",
  "serde",
@@ -2928,8 +3023,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-mpc"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2958,8 +3053,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-universal-hash"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2976,7 +3071,7 @@ dependencies = [
 [[package]]
 name = "tlsn-utils"
 version = "0.1.0"
-source = "git+https://github.com/tlsnotary/tlsn-utils?rev=8d8ffe1#8d8ffe1b962ea9267597e6bdb780d7de80dc9ab5"
+source = "git+https://github.com/tlsnotary/tlsn-utils?rev=51f313d#51f313d153f1b878e583e709d66a4661b40c2b6c"
 dependencies = [
  "serde",
 ]
@@ -2984,7 +3079,7 @@ dependencies = [
 [[package]]
 name = "tlsn-utils-aio"
 version = "0.1.0"
-source = "git+https://github.com/tlsnotary/tlsn-utils?rev=8d8ffe1#8d8ffe1b962ea9267597e6bdb780d7de80dc9ab5"
+source = "git+https://github.com/tlsnotary/tlsn-utils?rev=51f313d#51f313d153f1b878e583e709d66a4661b40c2b6c"
 dependencies = [
  "async-std",
  "async-trait",
@@ -3067,7 +3162,7 @@ checksum = "34704c8d6ebcbc939824180af020566b01a7c01f80641264eba0999f6c2b6be7"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -3151,9 +3246,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "42ff0bf0c66b8238c6f3b578df37d0b7848e55df8577b3f74f92a69acceeb825"
 
 [[package]]
+name = "ucd-trie"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed646292ffc8188ef8ea4d1e0e0150fb15a5c2e12ad9b8fc191ae7a8a7f3c4b9"
+
+[[package]]
 name = "uid-mux"
-version = "0.1.0-alpha.3"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#ca32ae22990af74ae07d8dd622aa95d7cecd4d13"
+version = "0.1.0-alpha.4"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
 dependencies = [
  "async-trait",
  "futures",
@@ -3283,7 +3384,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
  "wasm-bindgen-shared",
 ]
 
@@ -3317,7 +3418,7 @@ checksum = "642f325be6301eb8107a83d12a8ac6c1e1c54345a7ef1a9261962dfefda09e66"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
@@ -3362,7 +3463,7 @@ checksum = "a5211b7550606857312bba1d978a8ec75692eae187becc5e680444fffc5e6f89"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -3379,7 +3480,7 @@ dependencies = [
  "js-sys",
  "p256",
  "rayon",
- "ring 0.17.7",
+ "ring 0.17.8",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",
@@ -3440,7 +3541,7 @@ version = "0.22.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed63aea5ce73d0ff405984102c42de94fc55a6b75765d621c65262469b3c9b53"
 dependencies = [
- "ring 0.17.7",
+ "ring 0.17.8",
  "untrusted 0.9.0",
 ]
 
@@ -3675,7 +3776,7 @@ checksum = "9ce1b18ccd8e73a9321186f97e46f9f04b778851177567b1975109d26a08d2a6"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
 
 [[package]]
@@ -3695,5 +3796,5 @@ checksum = "ce36e65b0d2999d2aafac989fb249189a141aee1f53c612c1f37d72631959f69"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.48",
+ "syn 2.0.49",
 ]
