@@ -80,9 +80,14 @@ fn find_ranges(json: &str, target_keys_list: js_sys::Array) -> Vec<[usize; 2]> {
         let mut bracket_count = 0;
         let mut capture_all = false;
 
-        for (i, c) in json.chars().enumerate() {
+        for (i, c) in json.char_indices() {
             if skip_char {
                 skip_char = false;
+                continue;
+            }
+
+            if c > '\u{007f}' {
+                // If the character is non-ASCII, skip it
                 continue;
             }
 
