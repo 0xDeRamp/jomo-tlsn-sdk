@@ -33,6 +33,11 @@ function RevolutLastPayment() {
 
   const onNotarizationResult = async function (res) {
     console.log(res)
+    console.log(JSON.parse(res.proved_json))
+  }
+
+  const onNotarizationError = async function (e) {
+    console.log(e)
   }
 
   function childExtensionNotFound() {
@@ -83,12 +88,6 @@ function RevolutLastPayment() {
     )
   }
 
-  function onNotarizationError() {
-    return (
-      <Typography variant="body1">Error with notarizing</Typography>
-    )
-  }
-
   return (
     <JomoTlsnNotary
       notaryServers={{
@@ -122,7 +121,7 @@ function RevolutLastPayment() {
       childVerificationInProgress={childVerificationInProgress()}
       childVerificationComplete={childVerificationComplete()}
       childVerificationFail={childVerificationFail()}
-      onNotarizationError={onNotarizationError()}
+      onNotarizationError={onNotarizationError}
     />
   )
 }

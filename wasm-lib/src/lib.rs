@@ -814,7 +814,9 @@ pub async fn notarizeRequest(
         .collect();
     let received_str = received[response_range_count..].join("\"<REDACTED>\"");
 
-    post_update(format!("Proved Json Str, {received_str}").as_str());
-
-    return result;
+    return [
+        result,
+        received_str,
+    ]
+    .join("|||||");
 }

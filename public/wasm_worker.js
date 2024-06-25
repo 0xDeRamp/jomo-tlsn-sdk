@@ -41,12 +41,13 @@ class Notarizer {
           error: resProver,
         })
       } else {
-        const [sessionProof, substringsProof, bodyStart] = resProver.split("|||||")
+        const [sessionProof, substringsProof, bodyStart, provedJson] = resProver.split("|||||")
         postMessage({
           type: "notarize_result",
           sessionProof: sessionProof,
           substringsProof: substringsProof,
           bodyStart: bodyStart,
+          provedJson: provedJson,
         })
       }
     } catch (e) {

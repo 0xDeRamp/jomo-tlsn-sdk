@@ -30,6 +30,7 @@ export async function notarizeRequest(
             "session_proof": e.data.sessionProof,
             "substrings_proof": e.data.substringsProof,
             "body_start": parseInt(e.data.bodyStart),
+            "proved_json": e.data.provedJson,
           })
         }
       } else if (e.data.type === "notarize_process_details") {
