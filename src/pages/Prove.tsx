@@ -23,9 +23,20 @@ function Prove() {
 
         notaryConfig.current = queryParameters.get("notary_config")
         // const notaryFlowResponse = await apis.backendRequest('notary/flows', { "notary_config": notaryConfig.current })
-        const notaryFlowResponse = {
-            target_name: "Revolut",
-            flow_id: "revolut_last_payment",
+        var notaryFlowResponse = {
+            flow_id: "",
+            target_name: "",
+        }
+        if (notaryConfig.current === "revolut_last_payment") {
+            notaryFlowResponse = {
+                target_name: "Revolut",
+                flow_id: "revolut_last_payment",
+            }
+        } else if (notaryConfig.current === "coinbase_user") {
+            notaryFlowResponse = {
+                target_name: "Coinbase",
+                flow_id: "coinbase_user",
+            }
         }
         setNotaryFlow(notaryFlowResponse)
 
