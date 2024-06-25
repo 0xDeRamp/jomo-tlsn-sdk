@@ -796,10 +796,25 @@ pub async fn notarizeRequest(
     let substrings_proof = proof_builder.build().unwrap();
     let session_proof = notarized_session.session_proof();
 
-    return [
+    let result = [
         serde_json::to_string_pretty(&session_proof).unwrap(),
         serde_json::to_string_pretty(&substrings_proof).unwrap(),
         response_range_count.to_string(),
     ]
     .join("|||||");
+
+    let (sent, recv) = substrings_proof.verify(&session_proof.header).unwrap();
+
+    let recv_data = recv.data();
+    let received: Vec<String> = recv
+        .authed()
+        .clone()
+        .iter_ranges()
+        .map(|recv_range| String::from_utf8(recv_data[recv_range].to_vec()).unwrap())
+        .collect();
+    let received_str = received[response_range_count..].join("\"<REDACTED>\"");
+
+    post_update(format!("Proved Json Str, {received_str}").as_str());
+
+    return result;
 }
