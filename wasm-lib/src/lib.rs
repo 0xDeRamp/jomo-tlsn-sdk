@@ -597,7 +597,6 @@ pub async fn notarizeRequest(
     let config = ProverConfig::builder()
         .id(notarization_response.session_id)
         .server_dns(server)
-        .max_transcript_size(1 << 14)
         .build()
         .unwrap();
 

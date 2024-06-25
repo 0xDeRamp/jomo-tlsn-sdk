@@ -34,6 +34,7 @@ function JomoTlsnNotary({
     keysToNotarize: [["example"]],
   },
   onNotarizationResult,
+  onNotarizationError,
   childExtensionNotFound,
   childExtensionInstalled,
   childExtensionFound,
@@ -155,20 +156,27 @@ function JomoTlsnNotary({
       return
     }
 
-    const notarizationProof = await utils.notarizeRequest(
-      server, dataPath, dataMethod, {}, authHeaders,
-      [],
-      [],
-      keysToNotarize,
-      notaryServerHost,
-      notaryServerSsl,
-      websockifyServer,
-    )
+    try {
+      const notarizationProof = await utils.notarizeRequest(
+        server, dataPath, dataMethod, {}, authHeaders,
+        [],
+        [],
+        keysToNotarize,
+        notaryServerHost,
+        notaryServerSsl,
+        websockifyServer,
+      )
 
-    onNotarizationResult(notarizationProof)
-    setLoaded(true)
-    setLoadingFailed(false)
-    setLoading(false)
+      onNotarizationResult(notarizationProof)
+      setLoaded(true)
+      setLoadingFailed(false)
+      setLoading(false)
+    } catch (e) {
+      onNotarizationError(e)
+      setLoaded(false)
+      setLoadingFailed(true)
+      setLoading(false)
+    }
   }
 
   useEffect(() => {

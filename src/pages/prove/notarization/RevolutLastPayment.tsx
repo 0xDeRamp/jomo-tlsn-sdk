@@ -83,6 +83,12 @@ function RevolutLastPayment() {
     )
   }
 
+  function onNotarizationError() {
+    return (
+      <Typography variant="body1">Error with notarizing</Typography>
+    )
+  }
+
   return (
     <JomoTlsnNotary
       notaryServers={{
@@ -116,6 +122,7 @@ function RevolutLastPayment() {
       childVerificationInProgress={childVerificationInProgress()}
       childVerificationComplete={childVerificationComplete()}
       childVerificationFail={childVerificationFail()}
+      onNotarizationError={onNotarizationError()}
     />
   )
 }

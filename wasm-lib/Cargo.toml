@@ -33,12 +33,12 @@ webpki-roots = "0.23"
 
 ring = {version = "0.17", features = ["wasm32_unknown_unknown_js"]}
 
-tlsn-tls-client = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk" }
-tlsn-tls-client-async = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk" }
-tlsn-prover = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk", package = "tlsn-prover", features = [
+tlsn-tls-client = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk-v5" }
+tlsn-tls-client-async = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk-v5" }
+tlsn-prover = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk-v5", package = "tlsn-prover", features = [
   "tracing",
 ] }
-tlsn-core = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk", package = "tlsn-core" }
+tlsn-core = { git = "https://github.com/chcharcharlie/tlsn.git", branch="jomo-sdk-v5", package = "tlsn-core" }
 
 futures-util = "0.3.28"
 chrono = "0.4"

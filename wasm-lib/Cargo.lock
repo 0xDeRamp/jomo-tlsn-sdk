@@ -644,7 +644,7 @@ dependencies = [
 [[package]]
 name = "clmul"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "bytemuck",
  "cfg-if",
@@ -1632,7 +1632,7 @@ dependencies = [
 [[package]]
 name = "matrix-transpose"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "thiserror",
 ]
@@ -1655,7 +1655,7 @@ dependencies = [
 [[package]]
 name = "mpz-circuits"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "bincode",
  "itybity",
@@ -1672,7 +1672,7 @@ dependencies = [
 [[package]]
 name = "mpz-circuits-macros"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1682,7 +1682,7 @@ dependencies = [
 [[package]]
 name = "mpz-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "aes 0.8.4",
  "bcs",
@@ -1704,9 +1704,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "mpz-fields"
+version = "0.1.0"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
+dependencies = [
+ "ark-ff",
+ "ark-secp256r1",
+ "ark-serialize",
+ "itybity",
+ "mpz-core",
+ "num-bigint",
+ "opaque-debug",
+ "rand",
+ "serde",
+]
+
+[[package]]
 name = "mpz-garble"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "aes 0.8.4",
  "async-trait",
@@ -1733,7 +1749,7 @@ dependencies = [
 [[package]]
 name = "mpz-garble-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "aes 0.8.4",
  "blake3",
@@ -1754,7 +1770,7 @@ dependencies = [
 [[package]]
 name = "mpz-ot"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "aes 0.8.4",
  "async-trait",
@@ -1780,7 +1796,7 @@ dependencies = [
 [[package]]
 name = "mpz-ot-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "aes 0.8.4",
  "blake3",
@@ -1808,12 +1824,13 @@ dependencies = [
 [[package]]
 name = "mpz-share-conversion"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
  "async-trait",
  "derive_builder 0.11.2",
  "futures",
  "mpz-core",
+ "mpz-fields",
  "mpz-ot",
  "mpz-share-conversion-core",
  "rand",
@@ -1826,18 +1843,12 @@ dependencies = [
 [[package]]
 name = "mpz-share-conversion-core"
 version = "0.1.0"
-source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=850636f#850636fae4b327d2dba3924c9fa7a8c4c9003ab1"
+source = "git+https://github.com/privacy-scaling-explorations/mpz?rev=9f7403b#9f7403be410839767701b1a6817274715d90ae55"
 dependencies = [
- "ark-ff",
- "ark-secp256r1",
- "ark-serialize",
  "itybity",
- "mpz-core",
- "num-bigint",
- "opaque-debug",
+ "mpz-fields",
  "rand",
  "serde",
- "thiserror",
 ]
 
 [[package]]
@@ -2769,8 +2780,8 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tlsn-aead"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2788,8 +2799,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-block-cipher"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2802,8 +2813,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-common"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "futures",
  "tlsn-utils-aio",
@@ -2812,8 +2823,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-core"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "bimap",
  "bytes",
@@ -2835,8 +2846,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-formats"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "bytes",
  "serde",
@@ -2848,8 +2859,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-hmac-sha256"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -2865,8 +2876,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-hmac-sha256-circuits"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "mpz-circuits",
  "tracing",
@@ -2874,13 +2885,14 @@ dependencies = [
 
 [[package]]
 name = "tlsn-key-exchange"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
  "futures",
  "mpz-circuits",
+ "mpz-fields",
  "mpz-garble",
  "mpz-ot",
  "mpz-share-conversion-core",
@@ -2894,11 +2906,12 @@ dependencies = [
 
 [[package]]
 name = "tlsn-point-addition"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "mpz-core",
+ "mpz-fields",
  "mpz-share-conversion",
  "mpz-share-conversion-core",
  "p256",
@@ -2908,8 +2921,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-prover"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "bytes",
  "derive_builder 0.12.0",
@@ -2940,8 +2953,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-stream-cipher"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "aes 0.8.4",
  "async-trait",
@@ -2957,8 +2970,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-backend"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "futures",
@@ -2968,8 +2981,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-client"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "aes-gcm",
  "async-trait",
@@ -2991,8 +3004,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-client-async"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "bytes",
  "futures",
@@ -3004,8 +3017,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-core"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "futures",
  "hmac",
@@ -3023,8 +3036,8 @@ dependencies = [
 
 [[package]]
 name = "tlsn-tls-mpc"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
@@ -3053,14 +3066,15 @@ dependencies = [
 
 [[package]]
 name = "tlsn-universal-hash"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "derive_builder 0.12.0",
  "futures",
  "futures-util",
  "mpz-core",
+ "mpz-fields",
  "mpz-share-conversion",
  "mpz-share-conversion-core",
  "opaque-debug",
@@ -3253,8 +3267,8 @@ checksum = "ed646292ffc8188ef8ea4d1e0e0150fb15a5c2e12ad9b8fc191ae7a8a7f3c4b9"
 
 [[package]]
 name = "uid-mux"
-version = "0.1.0-alpha.4"
-source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk#c5c2855b3ead89ceeaf13874ba37f9ec2077a2fd"
+version = "0.1.0-alpha.5"
+source = "git+https://github.com/chcharcharlie/tlsn.git?branch=jomo-sdk-v5#6c93d10ee76678f1f087b65fcc80bb3db272812a"
 dependencies = [
  "async-trait",
  "futures",

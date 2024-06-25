@@ -22,7 +22,11 @@ function Prove() {
         })
 
         notaryConfig.current = queryParameters.get("notary_config")
-        const notaryFlowResponse = await apis.backendRequest('notary/flows', { "notary_config": notaryConfig.current })
+        // const notaryFlowResponse = await apis.backendRequest('notary/flows', { "notary_config": notaryConfig.current })
+        const notaryFlowResponse = {
+            target_name: "Revolut",
+            flow_id: "revolut_last_payment",
+        }
         setNotaryFlow(notaryFlowResponse)
 
         return notaryFlowResponse?.target_name
