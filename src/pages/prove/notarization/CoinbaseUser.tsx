@@ -88,7 +88,7 @@ function CoinbaseUser() {
           value={result && result.substrings_proof}>
         </TextField>
         <TextField fullWidth multiline label='Redacted Response' contentEditable={false}
-          value={result && JSON.stringify(JSON.parse(result.proved_json), null, 2)}>
+          value={result && result.proved_json && JSON.stringify(JSON.parse(result.proved_json), null, 2)}>
         </TextField>
       </Stack>
     )

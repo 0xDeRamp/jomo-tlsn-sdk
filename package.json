@@ -34,6 +34,7 @@
     "localforage": "^1.10.0",
     "notistack": "^3.0.1",
     "numeral": "^2.0.6",
+    "openlayer-sdk": "file:src/sdk-js",
     "pako": "^2.1.0",
     "querystring-browser": "^1.0.4",
     "react": "^18.0.0",
