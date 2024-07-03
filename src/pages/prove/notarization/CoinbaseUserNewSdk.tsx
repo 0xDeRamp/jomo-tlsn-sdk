@@ -1,7 +1,7 @@
 import { Button, Stack, Typography, CircularProgress, TextField, Box, Collapse } from '@mui/material';
 import Iconify from '../../../components/iconify';
 import { useState, useRef, useEffect } from 'react';
-import { OpenLayerExtensionInstalled, interceptAuthedRequest, notarizeWithAuth } from '../../../sdk-js/src';
+import { OpenlayerClientSDK } from 'openlayer-sdk/dist';
 
 
 function CoinbaseUserNewSdk() {
@@ -16,21 +16,32 @@ function CoinbaseUserNewSdk() {
   const notaryServerHost = "127.0.0.1:7047"
   const notaryServerSsl = false
   const websockifyServer = "ws://127.0.0.1:61289"
+  const proofVerificationServer = "http://127.0.0.1:3001/api/verify_proof"
+
+  const openlayerSDK = new OpenlayerClientSDK(
+    extensionId,
+    coinbaseServer,
+    notaryServerHost,
+    notaryServerSsl,
+    proofVerificationServer,
+  )
 
   const [needsExtension, setNeedsExtension] = useState(false)
   const [triggerExtensionInstall, setTriggerExtensionInstall] = useState(false)
   const firstMount = useRef(true)
   const extensionFound = useRef(false)
 
-  const [loading, setLoading] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [loadingFailed, setLoadingFailed] = useState(false)
+  const [proving, setProving] = useState(false)
+  const [proved, setProved] = useState(false)
+  const [provingFailed, setProvingFailed] = useState(false)
 
   const [result, setResult] = useState({
-    session_proof: "",
-    substrings_proof: "",
-    body_start: 0,
-    proved_json: "",
+    phonenumber_id: "",
+    phonenumber_country: "",
+    phonenumber_verified: false,
+    address_country: "",
+    product_access: "",
+    country: "",
   })
 
   const buildAuthHeaders = function (response) {
@@ -44,18 +55,26 @@ function CoinbaseUserNewSdk() {
   }
 
   const onNotarizationResult = async function (res) {
-    setResult(res)
+    const jsonRes = JSON.parse(res.received)
+    setResult({
+      phonenumber_id: jsonRes.phone_numbers[0].number_id,
+      phonenumber_country: jsonRes.phone_numbers[0].country,
+      phonenumber_verified: jsonRes.phone_numbers[0].verified,
+      address_country: jsonRes.residential_address.country_code,
+      product_access: jsonRes.product_access.join(", "),
+      country: jsonRes.country_code,
+    })
   }
 
   const onNotarizationError = async function (e) {
     console.log(e)
   }
 
-  function childExtensionNotFound() {
+  function InstallExtension() {
     return (
       <Stack alignItems={"center"}>
-        <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-          <Typography>Prove that you are a verified Coinbase user</Typography>
+        <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={1}>
+          <Typography align='center'>Note: OpenLayer browser extension is needed for the proof</Typography>
           <Button variant="contained" onClick={() => {
             window.open(`https://chrome.google.com/webstore/detail/${extensionName}/${extensionId}`, '_blank');
           }}>Install Jomo Copilot Extension</Button>
@@ -64,57 +83,67 @@ function CoinbaseUserNewSdk() {
     )
   }
 
-  function childExtensionInstalled() {
-    return (<></>)
-  }
-
-  function childExtensionFound() {
+  function ProveButton() {
     return (
-      <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }} spacing={2}>
-        <Typography>Prove that you are a verified Coinbase user</Typography>
-        <Button variant="contained">Login Coinbase</Button>
+      <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }}>
+        <Button variant="contained" disabled={needsExtension} onClick={startNotarize}>Login Coinbase and Claim DROP</Button>
       </Stack>
     )
   }
 
-  function childVerificationInProgress() {
+  function ProveInProgress() {
     return (
       <Stack direction={"row"} alignItems={"center"} gap={1} justifyContent={"center"}>
         <CircularProgress size={24} color="primary" />
-        <Typography variant="body1" textAlign={"center"}>Notarizing...</Typography>
+        <Typography variant="body1" textAlign={"center"}>Proving Coinbase account and residency...</Typography>
       </Stack>
     )
   }
 
-  function childVerificationComplete() {
+  function ProveSuccess() {
     return (
-      <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "550px" }} spacing={2}>
+      <Stack alignItems={"center"} sx={{ width: 1, maxWidth: "550px" }} spacing={1}>
         <Stack direction={"row"} alignItems={"center"} gap={1} justifyContent={"center"}>
           <Iconify height={36} width={36} color={"success.main"} icon="material-symbols:check" />
-          <Typography variant="body1">Notarized successfully</Typography>
+          <Typography variant="body1">Coinbase account proved and DROP claimed</Typography>
         </Stack>
-        <TextField sx={{ width: "550px" }} multiline maxRows={10} label='Session Proof' contentEditable={false}
-          value={result && result.session_proof}>
-        </TextField>
-        <TextField fullWidth multiline maxRows={10} label='Substrings Proof' contentEditable={false}
-          value={result && result.substrings_proof}>
-        </TextField>
-        <TextField fullWidth multiline label='Redacted Response' contentEditable={false}
-          value={result && result.proved_json && JSON.stringify(JSON.parse(result.proved_json), null, 2)}>
-        </TextField>
+        <Stack direction={"row"} width={1} justifyContent={'space-between'}>
+          <Typography variant='subtitle2'>Country</Typography>
+          <Typography variant='body2'>{result.country || "-"}</Typography>
+        </Stack>
+        <Stack direction={"row"} width={1} justifyContent={'space-between'}>
+          <Typography variant='subtitle2'>Phone Country</Typography>
+          <Typography variant='body2'>{result.phonenumber_country || "-"}</Typography>
+        </Stack>
+        <Stack direction={"row"} width={1} justifyContent={'space-between'}>
+          <Typography variant='subtitle2'>Residence Country</Typography>
+          <Typography variant='body2'>{result.address_country || "-"}</Typography>
+        </Stack>
+        <Stack direction={"row"} width={1} justifyContent={'space-between'}>
+          <Typography variant='subtitle2'>Phone Randomized Id</Typography>
+          <Typography variant='body2'>{result.phonenumber_id || "-"}</Typography>
+        </Stack>
+        <Stack direction={"row"} width={1} justifyContent={'space-between'}>
+          <Typography variant='subtitle2'>Phone Verified</Typography>
+          <Typography variant='body2'>{(result.phonenumber_verified && "True") || "-"}</Typography>
+        </Stack>
+        <Stack direction={"row"} width={1} justifyContent={'space-between'}>
+          <Typography variant='subtitle2'>Product Access</Typography>
+          <Typography variant='body2'>{result.product_access || "-"}</Typography>
+        </Stack>
       </Stack>
     )
   }
 
-  function childVerificationFail() {
+  function ProveFailed() {
     return (
-      <Typography variant="body1">Failed to fetch data</Typography>
+      <Typography variant="body1">Failed to prove</Typography>
     )
   }
 
   async function checkExtension() {
     if (!extensionFound.current) {
-      var hasExtension = OpenLayerExtensionInstalled(extensionId)
+      var hasExtension = openlayerSDK.isOpenLayerExtensionInstalled()
 
       if (hasExtension) {
         setNeedsExtension(false)
@@ -130,34 +159,35 @@ function CoinbaseUserNewSdk() {
   }
 
   async function startNotarize() {
-    setLoading(true)
+    setProving(true)
 
-    const authResponse = await interceptAuthedRequest(extensionId, redirectUrl, urlFilters)
+    const authResponse = await openlayerSDK.interceptAuthedRequest(redirectUrl, urlFilters)
     const authHeaders = buildAuthHeaders(authResponse)
 
-    const [notarizeResult, error] = await notarizeWithAuth(
-      coinbaseServer,
+    const [notarizeProof, error] = await openlayerSDK.notarizeWithAuth(
       authHeaders,
       dataPath,
       dataMethod,
       keysToNotarize,
-      notaryServerHost,
-      notaryServerSsl,
       websockifyServer,
     )
-    if (notarizeResult) {
-      onNotarizationResult(notarizeResult)
-      setLoaded(true)
-      setLoadingFailed(false)
-      setLoading(false)
-      return notarizeResult
-    } else {
-      onNotarizationError(error)
-      setLoaded(false)
-      setLoadingFailed(true)
-      setLoading(false)
-      return null
+    if (notarizeProof) {
+      const verificationRes = await openlayerSDK.verifyNotarizationProof({
+        proof: notarizeProof,
+      })
+      if (verificationRes.status === 200) {
+        setProved(true)
+        setProvingFailed(false)
+        setProving(false)
+        onNotarizationResult(verificationRes.data)
+        return verificationRes
+      }
     }
+    onNotarizationError(error)
+    setProved(false)
+    setProvingFailed(true)
+    setProving(false)
+    return null
   }
 
   useEffect(() => {
@@ -170,33 +200,33 @@ function CoinbaseUserNewSdk() {
 
   return (
     <Box alignItems={"center"} sx={{ width: 1, maxWidth: "450px" }}>
-      {triggerExtensionInstall &&
-        <>
-          <Collapse in={needsExtension}>
-            {childExtensionNotFound()}
-          </Collapse>
-          <Collapse in={!needsExtension}>
-            {childExtensionInstalled()}
-          </Collapse>
-        </>
-      }
+      <Stack alignItems={"center"} gap={2}>
 
-      <Collapse in={!needsExtension}>
+        <Typography variant='h4'>Claim Your DROP</Typography>
+
+        <Typography variant='subtitle1'>Before claiming your DROP tokens, you need to prove your Coinbase account access and country of residence.</Typography>
+
+        {triggerExtensionInstall &&
+          <Collapse in={needsExtension}>
+            {InstallExtension()}
+          </Collapse>
+        }
+
         <Stack alignItems={"center"}>
-          <Collapse in={!loading && !loadingFailed && !loaded} sx={{ width: 1, maxWidth: "450px" }} onClick={startNotarize}>
-            {childExtensionFound()}
+          <Collapse in={!proving && !provingFailed && !proved} sx={{ width: 1, maxWidth: "450px" }}>
+            {ProveButton()}
           </Collapse>
-          <Collapse in={loading} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
-            {childVerificationInProgress()}
+          <Collapse in={proving} sx={{ width: 1, maxWidth: "450px", alignContent: "center" }}>
+            {ProveInProgress()}
           </Collapse>
-          <Collapse in={loadingFailed}>
-            {childVerificationFail()}
+          <Collapse in={provingFailed}>
+            {ProveFailed()}
           </Collapse>
-          <Collapse in={loaded}>
-            {childVerificationComplete()}
+          <Collapse in={proved}>
+            {ProveSuccess()}
           </Collapse>
         </Stack>
-      </Collapse>
+      </Stack>
     </Box >
   )
 }

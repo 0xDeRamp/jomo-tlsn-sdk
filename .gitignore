@@ -137,3 +137,4 @@ build/
 **/.DS_Store
 
 wasm-lib/target
+wasm-verifier-lib/target
