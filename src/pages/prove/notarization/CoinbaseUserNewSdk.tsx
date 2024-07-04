@@ -16,7 +16,7 @@ function CoinbaseUserNewSdk() {
   const notaryServerHost = "127.0.0.1:7047"
   const notaryServerSsl = false
   const websockifyServer = "ws://127.0.0.1:61289"
-  const proofVerificationServer = "http://127.0.0.1:3001/api/verify_proof"
+  const proofVerificationServer = "https://us-central1-openlayer-demo.cloudfunctions.net/backend_apis/api/verify_proof"
 
   const openlayerSDK = new OpenlayerClientSDK(
     extensionId,

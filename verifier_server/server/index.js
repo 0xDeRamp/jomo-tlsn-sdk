@@ -1,6 +1,6 @@
 // server/index.js
 
-const PORT = process.env.SERVER_PORT || 3001;
+const PORT = process.env.SERVER_PORT;
 const express = require("express");
 const app = express();
 app.use(express.json({ limit: '1mb' }));
