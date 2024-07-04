@@ -1,4 +1,3 @@
-import CoinbaseUser from "./notarization/CoinbaseUser"
 import CoinbaseUserNewSdk from "./notarization/CoinbaseUserNewSdk"
 import RevolutLastPayment from "./notarization/RevolutLastPayment"
 import RobinhoodRoi from "./notarization/RobinhoodRoi"

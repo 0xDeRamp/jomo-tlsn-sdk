@@ -1,19 +1,19 @@
 import { useState } from 'react'
 import { Stack, ToggleButtonGroup, Typography, ToggleButton, Avatar } from '@mui/material';
-import * as apis from '../../../utils/apirequests.js'
+// import * as apis from '../../../utils/apirequests.js'
 import robinhoodImg from '../../../images/robinhood.png'
-import { JomoTlsnNotary } from 'jomo-tlsn-sdk/dist';
+// import { JomoTlsnNotary } from 'jomo-tlsn-sdk/dist';
 
 
 function RobinhoodRoi() {
-  const robinhoodServer = "api.robinhood.com"
+  // const robinhoodServer = "api.robinhood.com"
 
-  const [loading, setLoading] = useState(false)
-  const [loaded, setLoaded] = useState(false)
-  const [verifiedData, setVerifiedData] = useState(null)
-  const [verifiedTimestamp, setVerifiedTimestamp] = useState(null)
+  const [loading] = useState(false)
+  const [loaded] = useState(false)
+  const [verifiedData] = useState(null)
+  const [verifiedTimestamp] = useState(null)
   const [timespan, setTimespan] = useState('week');
-  const [uniqueId, setUniqueId] = useState(null);
+  const [uniqueId] = useState(null);
 
   const timespanToStr = {
     "0": "Weekly",
@@ -25,49 +25,49 @@ function RobinhoodRoi() {
     setTimespan(newTimespan);
   };
 
-  const buildAuthHeaders = function (response) {
-    setLoading(true)
-    const bearer = response.headers.Authorization.split(" ")[1]
+  // const buildAuthHeaders = function (response) {
+  //   setLoading(true)
+  //   const bearer = response.headers.Authorization.split(" ")[1]
 
-    const authedHeader = new Map([
-      ["Authorization", "Bearer " + bearer],
-      ["Host", robinhoodServer],
-    ])
-    return authedHeader
-  }
+  //   const authedHeader = new Map([
+  //     ["Authorization", "Bearer " + bearer],
+  //     ["Host", robinhoodServer],
+  //   ])
+  //   return authedHeader
+  // }
 
-  const buildDataPathWithResponse = function (response) {
-    const account = response["results"][0]["account_number"] || null
-    if (!account) {
-      return null
-    }
+  // const buildDataPathWithResponse = function (response) {
+  //   const account = response["results"][0]["account_number"] || null
+  //   if (!account) {
+  //     return null
+  //   }
 
-    const timespanParams = {
-      "week": "interval=day&span=week",
-      "month": "interval=week&span=month",
-      "year": "interval=3month&span=year",
-    }
-    const dataPath = `portfolios/historicals/${account}/?account=${account}&${timespanParams[timespan]}`
-    return dataPath
-  }
+  //   const timespanParams = {
+  //     "week": "interval=day&span=week",
+  //     "month": "interval=week&span=month",
+  //     "year": "interval=3month&span=year",
+  //   }
+  //   const dataPath = `portfolios/historicals/${account}/?account=${account}&${timespanParams[timespan]}`
+  //   return dataPath
+  // }
 
-  const onNotarizationResult = async function (notarizationProof) {
-    let res = await apis.backendRequest("generate_notary_attestation", {
-      attestation_name: "us_brokerage_portfolio_movement",
-      brokerage: "Robinhood",
-      time_span: timespan,
-      session_proof: notarizationProof["session_proof"],
-      substrings_proof: notarizationProof["substrings_proof"],
-      body_start: notarizationProof["body_start"],
-    })
-    if (res.validated) {
-      setVerifiedData(res.raw_elements)
-      setVerifiedTimestamp(res.attestation.sig.message.time)
-      setUniqueId(res.unique_id)
-      setLoaded(true)
-    }
-    setLoading(false)
-  }
+  // const onNotarizationResult = async function (notarizationProof) {
+  //   let res = await apis.backendRequest("generate_notary_attestation", {
+  //     attestation_name: "us_brokerage_portfolio_movement",
+  //     brokerage: "Robinhood",
+  //     time_span: timespan,
+  //     session_proof: notarizationProof["session_proof"],
+  //     substrings_proof: notarizationProof["substrings_proof"],
+  //     body_start: notarizationProof["body_start"],
+  //   })
+  //   if (res.validated) {
+  //     setVerifiedData(res.raw_elements)
+  //     setVerifiedTimestamp(res.attestation.sig.message.time)
+  //     setUniqueId(res.unique_id)
+  //     setLoaded(true)
+  //   }
+  //   setLoading(false)
+  // }
 
   return (
     <>

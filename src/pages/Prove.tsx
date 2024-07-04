@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { Stack, Divider, CircularProgress } from '@mui/material';
 // @ts-ignore
 import { useUserContext } from '../context/UserContext.tsx';
-import * as apis from '../utils/apirequests.js'
 import ProveNotarization from './prove/ProveNotarization';
 
 function Prove() {
