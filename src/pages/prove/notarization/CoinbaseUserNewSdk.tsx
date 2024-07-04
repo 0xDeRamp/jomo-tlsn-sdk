@@ -6,7 +6,7 @@ import { OpenlayerClientSDK } from 'openlayer-sdk/dist';
 
 function CoinbaseUserNewSdk() {
   const coinbaseServer = "accounts.coinbase.com"
-  const extensionId = "nmdnfckjjghlbjeodefnapacfnocpdgm"
+  const extensionId = "hbpgdijhnkpoamhgabfpmcanblibkcfl"
   const extensionName = "jomo-copilot"
   const redirectUrl = "https://accounts.coinbase.com/profile"
   const urlFilters = ["https://accounts.coinbase.com/api/v1/user"]
@@ -77,7 +77,7 @@ function CoinbaseUserNewSdk() {
           <Typography align='center'>Note: OpenLayer browser extension is needed for the proof</Typography>
           <Button variant="contained" onClick={() => {
             window.open(`https://chrome.google.com/webstore/detail/${extensionName}/${extensionId}`, '_blank');
-          }}>Install Jomo Copilot Extension</Button>
+          }}>Install OpenLayer Extension</Button>
         </Stack>
       </Stack>
     )

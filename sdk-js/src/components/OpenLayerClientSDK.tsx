@@ -40,7 +40,7 @@ class OpenlayerClientSDK {
       chrome.runtime.sendMessage(
         this.extensionId,
         {
-          type: "prepareSession",
+          type: "OpenLayerNotarySession",
           redirectUrl: redirectUrl,
           urlFilters: urlFilters,
         },
