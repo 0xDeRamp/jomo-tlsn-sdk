@@ -1,5 +1,5 @@
 import CoinbaseUserNewSdk from "./notarization/CoinbaseUserNewSdk"
-import RevolutLastPayment from "./notarization/RevolutLastPayment"
+import RevolutLastPaymentNewSdk from "./notarization/RevolutLastPaymentNewSdk"
 import RobinhoodRoi from "./notarization/RobinhoodRoi"
 import Venmo from "./notarization/Venmo"
 
@@ -9,7 +9,7 @@ function ProveNotarization({ notaryFlow }) {
     return (
         <>
             {notaryFlow && notaryFlow.flow_id === "revolut_last_payment" &&
-                <RevolutLastPayment />
+                <RevolutLastPaymentNewSdk />
             }
             {notaryFlow && notaryFlow.flow_id === "coinbase_user" &&
                 <CoinbaseUserNewSdk />
