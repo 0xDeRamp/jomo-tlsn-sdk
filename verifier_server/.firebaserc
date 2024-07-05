@@ -1,8 +1,5 @@
 {
   "projects": {
-    "default": "openlayer-demo",
-    "demo": "openlayer-demo"
-  },
-  "targets": {},
-  "etags": {}
+    "default": "openlayer-demo"
+  }
 }

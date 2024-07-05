@@ -7,7 +7,7 @@ import { OpenlayerClientSDK } from 'openlayer-sdk/dist';
 function CoinbaseUserNewSdk() {
   const coinbaseServer = "accounts.coinbase.com"
   const extensionId = "hbpgdijhnkpoamhgabfpmcanblibkcfl"
-  const extensionName = "jomo-copilot"
+  const extensionName = "OpenLayer"
   const redirectUrl = "https://accounts.coinbase.com/profile"
   const urlFilters = ["https://accounts.coinbase.com/api/v1/user"]
   const dataPath = `api/v1/user`
@@ -16,7 +16,7 @@ function CoinbaseUserNewSdk() {
   const notaryServerHost = "127.0.0.1:7047"
   const notaryServerSsl = false
   const websockifyServer = "ws://127.0.0.1:61289"
-  const proofVerificationServer = "https://us-central1-openlayer-demo.cloudfunctions.net/backend_apis/api/verify_proof"
+  const proofVerificationServer = "api/verify_proof"
 
   const openlayerSDK = new OpenlayerClientSDK(
     extensionId,
