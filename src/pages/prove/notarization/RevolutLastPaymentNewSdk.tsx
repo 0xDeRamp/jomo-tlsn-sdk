@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 
 function RevolutLastPaymentNewSdk() {
   const revolutServer = "app.revolut.com"
-  const extensionId = "kggdpakndgciiijdljnambgfeijdiacd"
+  const extensionId = "kidmejgglkmmkomccdagfekjfmlgibjb"
   const extensionName = "OpenLayer"
   const redirectUrl = "https://app.revolut.com/home"
   const urlFilters = ["https://app.revolut.com/api/retail/user/current/wallet"]

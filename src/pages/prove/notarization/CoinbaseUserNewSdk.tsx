@@ -6,7 +6,7 @@ import { OpenlayerClientSDK } from 'openlayer-sdk/dist';
 
 function CoinbaseUserNewSdk() {
   const coinbaseServer = "accounts.coinbase.com"
-  const extensionId = "kggdpakndgciiijdljnambgfeijdiacd"
+  const extensionId = "kidmejgglkmmkomccdagfekjfmlgibjb"
   const extensionName = "OpenLayer"
   const redirectUrl = "https://accounts.coinbase.com/profile"
   const urlFilters = ["https://accounts.coinbase.com/api/v1/user"]
