@@ -37,6 +37,12 @@ function Prove() {
                 flow_id: "coinbase_user",
             }
         }
+        else if (notaryConfig.current === "linkedin_connections") {
+            notaryFlowResponse = {
+                target_name: "LinkedIn",
+                flow_id: "linkedin_connections",
+            }
+        }
         setNotaryFlow(notaryFlowResponse)
 
         return notaryFlowResponse?.target_name

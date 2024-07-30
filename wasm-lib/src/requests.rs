@@ -14,7 +14,8 @@ pub struct NotarizationSessionResponse {
 pub struct NotarizationSessionRequest {
     pub client_type: ClientType,
     /// Maximum transcript size in bytes
-    pub max_transcript_size: Option<usize>,
+    pub max_sent_data: Option<usize>,
+    pub max_recv_data: Option<usize>,
 }
 
 /// Types of client that the prover is using

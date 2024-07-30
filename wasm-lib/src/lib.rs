@@ -564,7 +564,8 @@ pub async fn notarizeRequest(
     // set body
     let payload = serde_json::to_string(&NotarizationSessionRequest {
         client_type: ClientType::Websocket,
-        max_transcript_size: Some(1 << 14),
+        max_sent_data: Some (1<<13),
+        max_recv_data: Some (1<<13),
     })
     .unwrap();
     opts.body(Some(&JsValue::from_str(&payload)));
@@ -596,6 +597,8 @@ pub async fn notarizeRequest(
     // Basic default prover config
     let config = ProverConfig::builder()
         .id(notarization_response.session_id)
+        .max_sent_data(1<<13)
+        .max_recv_data(1<<13)
         .server_dns(server)
         .build()
         .unwrap();
@@ -613,10 +616,14 @@ pub async fn notarizeRequest(
         .expect_throw("assume the client ws connection succeeds");
     let client_ws_stream_into = client_ws_stream.into_io();
 
+    post_update("Connected to application server");
+
     // Bind the Prover to the server connection.
     // The returned `mpc_tls_connection` is an MPC TLS connection to the Server: all data written
     // to/read from it will be encrypted/decrypted using MPC with the Notary.
     let (mpc_tls_connection, prover_fut) = prover.connect(client_ws_stream_into).await.unwrap();
+
+    post_update("3 party TLS setup");
 
     let prover_ctrl = prover_fut.control();
 
@@ -634,11 +641,15 @@ pub async fn notarizeRequest(
     };
     spawn_local(handled_prover_fut);
 
+    post_update("Prover spawn up");
+
     // Attach the hyper HTTP client to the TLS connection
     let (mut request_sender, connection) =
         hyper::client::conn::handshake(mpc_tls_connection.compat())
             .await
             .unwrap();
+
+    post_update("HTTP handshake with application server");
 
     // Spawn the HTTP task to be run concurrently
     let (connection_sender, connection_receiver) = oneshot::channel();
@@ -655,6 +666,8 @@ pub async fn notarizeRequest(
         }
     };
     spawn_local(handled_connection_fut);
+
+    post_update("Connection spawn up");
 
     let json: serde_json::Value = serde_json::from_str(data).expect("json wrong");
     let mut buf = BytesMut::new().writer();
