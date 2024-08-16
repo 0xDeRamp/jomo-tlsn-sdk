@@ -13,7 +13,7 @@ function LinkedInConnectionsNewSdk() {
   const dataPath = `voyager/api/relationships/dash/connections?decorationId=com.linkedin.voyager.dash.deco.web.mynetwork.ConnectionList-16&count=1&q=search&start=0`
   const dataMethod = "GET"
   const keysToNotarize = [["elements", "connectedMemberResolutionResult", "publicIdentifier"], ["elements", "connectedMemberResolutionResult", "headline"]]
-  const notaryServerHost = "notary.jomo.id:7047"
+  const notaryServerHost = "notary.jomo.id:61288"
   const notaryServerSsl = true
   const websockifyServer = "wss://notary.jomo.id:61294"
   // const notaryServerHost = "localhost:7047"

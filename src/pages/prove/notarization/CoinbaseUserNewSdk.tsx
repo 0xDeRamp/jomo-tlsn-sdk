@@ -13,7 +13,7 @@ function CoinbaseUserNewSdk() {
   const dataPath = `api/v1/user`
   const dataMethod = "GET"
   const keysToNotarize = [["country_code"], ["phone_numbers", "country"], ["phone_numbers", "number_id"], ["phone_numbers", "verified"], ["residential_address", "country_code"], ["unified_accounts_has_trading_privilege"], ["product_access"], ["unified_accounts_access_list"]]
-  const notaryServerHost = "notary.jomo.id:7047"
+  const notaryServerHost = "notary.jomo.id:61288"
   const notaryServerSsl = true
   const websockifyServer = "wss://notary.jomo.id:61293"
   // const notaryServerHost = "localhost:7047"
