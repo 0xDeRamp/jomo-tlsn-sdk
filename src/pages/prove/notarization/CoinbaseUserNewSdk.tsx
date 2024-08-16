@@ -16,6 +16,9 @@ function CoinbaseUserNewSdk() {
   const notaryServerHost = "notary.jomo.id:7047"
   const notaryServerSsl = true
   const websockifyServer = "wss://notary.jomo.id:61293"
+  // const notaryServerHost = "localhost:7047"
+  // const notaryServerSsl = false
+  // const websockifyServer = "ws://127.0.0.1:61294"
   const proofVerificationServer = "api/verify_proof"
 
   const openlayerSDK = new OpenlayerClientSDK(

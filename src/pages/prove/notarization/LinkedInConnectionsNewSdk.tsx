@@ -10,7 +10,7 @@ function LinkedInConnectionsNewSdk() {
   const extensionName = "OpenLayer"
   const redirectUrl = "https://www.linkedin.com/in/"
   const urlFilters = ["https://www.linkedin.com/voyager/api/voyagerIdentityDashProfilePhotoFrames"]
-  const dataPath = `voyager/api/relationships/dash/connections?decorationId=com.linkedin.voyager.dash.deco.web.mynetwork.ConnectionList-16&count=3&q=search&start=0`
+  const dataPath = `voyager/api/relationships/dash/connections?decorationId=com.linkedin.voyager.dash.deco.web.mynetwork.ConnectionList-16&count=1&q=search&start=0`
   const dataMethod = "GET"
   const keysToNotarize = [["elements", "connectedMemberResolutionResult", "publicIdentifier"], ["elements", "connectedMemberResolutionResult", "headline"]]
   const notaryServerHost = "notary.jomo.id:7047"
